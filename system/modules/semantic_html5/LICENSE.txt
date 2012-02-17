@@ -1,0 +1,7 @@
+/**
+ * Package    	semantic_html5
+ * Copyright  	MEN AT WORK 2012
+ * Author		Andreas Isaak <cms@men-at-work.de>
+ * Link			http://www.men-at-work.de/
+ * License    	GNU/LGPL
+ */
