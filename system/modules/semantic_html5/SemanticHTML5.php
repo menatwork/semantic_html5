@@ -33,7 +33,12 @@
  */
 class SemanticHTML5 extends ContentElement
 {
-
+    /**
+        * Template
+        * @var string
+        */
+    protected $strTemplate = 'ce_semantic_html5';    
+    
     /**
      * Initialize the object
      * 
@@ -42,14 +47,6 @@ class SemanticHTML5 extends ContentElement
     public function __construct(Database_Result $objElement)
     {
         parent::__construct($objElement);
-        if ($this->type == 'semantic_html5' && $this->sh5_tag == 'start')
-        {
-            $this->strTemplate = 'ce_semantic_html5_start';
-        }
-        else
-        {
-            $this->strTemplate = 'ce_semantic_html5_end';
-        }
     }
 
     /**
@@ -58,19 +55,15 @@ class SemanticHTML5 extends ContentElement
      */
     public function generate()
     {
-        if ($this->type == 'semantic_html5' && $this->sh5_tag == 'start')
-        {
-            $strTextValue = $GLOBALS['TL_LANG']['CTE']['semantic_html5_start'][0];
-        }
-        else
-        {
-            $strTextValue = $GLOBALS['TL_LANG']['CTE']['semantic_html5_end'][0];
-        }
+        $objElement = $this->Database
+                ->prepare("SELECT * FROM `tl_content` WHERE id = ?")
+                ->limit(1)
+                ->execute($this->id);
 
         if (TL_MODE == 'BE')
         {
             $objTemplate = new BackendTemplate('be_wildcard');
-            $objTemplate->wildcard = '### ' . $strTextValue . ' ###';
+            $objTemplate->wildcard = "&lt;" . (($this->sh5_tag == 'end') ? '/' : '') . $objElement->sh5_type . "&gt;";
 
             return $objTemplate->parse();
         }

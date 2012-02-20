@@ -52,7 +52,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['sh5_type'] = array
     'label' => &$GLOBALS['TL_LANG']['tl_content']['sh5_type'],
     'inputType' => 'select',
     'options' => array_keys($GLOBALS['TL_HTML5']),
-    'eval' => array('mandatory' => true, 'includeBlankOption' => true)
+    'eval' => array('submitOnChange' => true, 'mandatory' => true, 'includeBlankOption' => true)
 );
 
 /**
@@ -98,6 +98,9 @@ class tl_content_semantic_html5 extends tl_content
      */
     public function onsubmitCallback(DataContainer $dc)
     {
+        FB::log($_POST);
+        FB::log($this->Input->post('sh5_type'));
+        
         // Get current element
         $objElemStart = $this->Database
                 ->prepare("SELECT * FROM `tl_content` WHERE id = ?")
@@ -119,6 +122,7 @@ class tl_content_semantic_html5 extends tl_content
             if ($objElemEnd->sh5_tag == 'end')
             {
                 unset($arrSet['sorting']);
+                $arrSet['sh5_type'] = $this->Input->post('sh5_type');
 
                 // Update end tag
                 $this->Database
@@ -128,7 +132,7 @@ class tl_content_semantic_html5 extends tl_content
             }
             else
             {
-                $arrSet['sorting'] += 100;
+                $arrSet['sorting'] += 1;
 
                 // Insert end tag
                 $this->Database
