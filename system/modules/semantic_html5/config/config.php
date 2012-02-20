@@ -33,8 +33,9 @@ $GLOBALS['TL_CTE']['texts']['semantic_html5'] = 'SemanticHTML5';
 
 $GLOBALS['TL_HTML5'] = array(
     'article'   => 'article',
-    'section'   => 'section',
-    'header'    => 'header',
+    'div'       => 'div'
     'footer'    => 'footer',
-    'hgroup'    => 'hgroup'
+    'hgroup'    => 'hgroup',
+    'header'    => 'header',
+    'section'   => 'section'   
 );
