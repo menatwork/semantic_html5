@@ -28,11 +28,6 @@
  */
 
 /**
- * Fields
+ * Texts
  */
-$GLOBALS['TL_LANG']['tl_content']['sh5_type'] = array('HTML5-Elemente', 'Bitte wählen Sie den HTML5-Elementtyp aus.');
-
-/**
- * Legends
- */
-$GLOBALS['TL_LANG']['tl_content']['html5_legend'] = 'HTML5-Elemente';
+$GLOBALS['TL_LANG']['CTE']['semantic_html5'] = array('HTML5 element','');

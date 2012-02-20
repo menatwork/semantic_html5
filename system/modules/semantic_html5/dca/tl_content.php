@@ -97,10 +97,7 @@ class tl_content_semantic_html5 extends tl_content
      * @param DataContainer $dc 
      */
     public function onsubmitCallback(DataContainer $dc)
-    {
-        FB::log($_POST);
-        FB::log($this->Input->post('sh5_type'));
-        
+    {        
         // Get current element
         $objElemStart = $this->Database
                 ->prepare("SELECT * FROM `tl_content` WHERE id = ?")
