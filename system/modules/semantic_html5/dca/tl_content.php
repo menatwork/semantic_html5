@@ -1,4 +1,5 @@
-<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
+<?php if (!defined('TL_ROOT')) 
+    die('You cannot access this file directly!');
 
 /**
  * Contao Open Source CMS
@@ -48,10 +49,10 @@ $GLOBALS['TL_DCA']['tl_content']['config']['ondelete_callback'][] = array('tl_co
 // Fields
 $GLOBALS['TL_DCA']['tl_content']['fields']['sh5_type'] = array
     (
-    'label' => &$GLOBALS['TL_LANG']['tl_content']['sh5_type'],
-    'inputType' => 'select',
-    'options' => array_keys($GLOBALS['TL_HTML5']),
-    'eval' => array('submitOnChange' => true, 'mandatory' => true, 'includeBlankOption' => true)
+    'label'             => &$GLOBALS['TL_LANG']['tl_content']['sh5_type'],
+    'inputType'         => 'select',
+    'options_callback'  => array('tl_content_semantic_html5', 'sh5TypeOptionsCallback'),
+    'eval'              => array('submitOnChange' => true, 'mandatory' => true, 'includeBlankOption' => true)
 );
 
 /**
@@ -87,6 +88,26 @@ class tl_content_semantic_html5 extends tl_content
             }
         }
         return TRUE;
+    }
+    
+    /**
+     * Merge the default-tags and the customer-tags array together and return them
+     * 
+     * @return array
+     */
+    public function sh5TypeOptionsCallback()
+    {
+        $arrCustomerTags = array();
+        if(strlen($GLOBALS['TL_CONFIG']['sh5_customer_tags']))
+        {
+            $arrCustomerTags = explode(',', $GLOBALS['TL_CONFIG']['sh5_customer_tags']);
+            foreach($arrCustomerTags AS $k => $v)
+            {
+                $arrCustomerTags[$k] = trim($v);
+            }
+        }
+        
+        return array_merge(array_keys($GLOBALS['TL_HTML5']), $arrCustomerTags);
     }
 
     /**
