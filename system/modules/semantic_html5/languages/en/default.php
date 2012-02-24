@@ -31,4 +31,4 @@
 /**
  * Texts
  */
-$GLOBALS['TL_LANG']['CTE']['semantic_html5'] = array('HTML5 element','');
+$GLOBALS['TL_LANG']['CTE']['semantic_html5'] = array('HTML5 tag','');
