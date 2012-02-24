@@ -31,4 +31,4 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_settings']['sh5_customer_tags'] = array('HTML5 Tags', 'Here you can insert new HTML5 tags separated by commas that should stand in the HTML5 content element available.');
+$GLOBALS['TL_LANG']['tl_settings']['sh5_customer_tags'] = array('HTML5 tags', 'Here you can expand the list of HTML5 tags for the extension semantic_html5.');
