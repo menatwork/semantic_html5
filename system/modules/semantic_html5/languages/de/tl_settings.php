@@ -31,4 +31,4 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_settings']['sh5_customer_tags'] = array('HTML5 Tags', 'Hier können Sie neue HTML5 tags kommasepariert einfügen die in dem HTML5 Contentelement zur Verfügung stehen sollen.');
+$GLOBALS['TL_LANG']['tl_settings']['sh5_customer_tags'] = array('HTML5-Elemente', 'Hier können Sie die Liste der HTMl5-Elemente um eigene Elemente erweitern. Diese stehen Ihnen anschließend als neue Contentelemente zur Verfügung.');
