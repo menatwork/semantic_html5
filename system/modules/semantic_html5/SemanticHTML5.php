@@ -61,9 +61,13 @@ class SemanticHTML5 extends ContentElement
                 ->execute($this->id);
 
         if (TL_MODE == 'BE')
-        {
+        {                                    
             $objTemplate = new BackendTemplate('be_wildcard');
-            $objTemplate->wildcard = "&lt;" . (($this->sh5_tag == 'end') ? '/' : '') . $objElement->sh5_type . "&gt;";
+            $objTemplate->wildcard = vsprintf("&lt;%s%s%s&gt;", array(
+                (($this->sh5_tag == 'end') ? '/' : '') . $objElement->sh5_type,
+                (($this->sh5_tag == 'start' && strlen($this->cssID[0])) ? ' id="' . $this->cssID[0] . '"' : ''),
+                (($this->sh5_tag == 'start' && strlen($this->cssID[1])) ? ' class="' . $this->cssID[1] . '"' : '')                
+            ));
 
             return $objTemplate->parse();
         }
