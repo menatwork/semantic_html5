@@ -31,9 +31,9 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_content']['sh5_type'] = array('HTML5 elements', 'Please select the HTML5 element type.');
+$GLOBALS['TL_LANG']['tl_content']['sh5_type'] = array('HTML5 tags', 'Please select the HTML5 tag.');
 
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_content']['html5_legend'] = 'HTML5 elements';
+$GLOBALS['TL_LANG']['tl_content']['html5_legend'] = 'HTML5 tags';
