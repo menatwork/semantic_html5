@@ -31,4 +31,4 @@
 /**
  * Back end modules
  */
-$GLOBALS['TL_LANG']['MOD']['semantic_html5'] = array('HTML5 elements', '');
+$GLOBALS['TL_LANG']['MOD']['semantic_html5'] = array('HTML5 tags', '');
