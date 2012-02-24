@@ -33,7 +33,7 @@
  */
 
 // Palettes
-if (tl_content_semantic_html5::checkForTag())
+if (tl_content_sh5::checkForTag())
 {
     $GLOBALS['TL_DCA']['tl_content']['palettes']['semantic_html5'] = '{type_legend},type,headline;{html5_legend},sh5_type;{protected_legend:hide},protected;{expert_legend:hide},guests,invisible,cssID,space';
 }
