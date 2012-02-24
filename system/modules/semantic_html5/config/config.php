@@ -38,5 +38,5 @@ $GLOBALS['TL_HTML5'] = array(
     'header'    => 'header',
     'hgroup'    => 'hgroup',    
     'section'   => 'section',
-	'div'		=> 'div'
+    'div'       => 'div'
 );
