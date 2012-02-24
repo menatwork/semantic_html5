@@ -31,4 +31,4 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_settings']['sh5_customer_tags'] = array('HTML5-Elemente', 'Hier können Sie die Liste der HTMl5-Elemente um eigene Elemente erweitern. Diese stehen Ihnen anschließend als neue Contentelemente zur Verfügung.');
+$GLOBALS['TL_LANG']['tl_settings']['sh5_customer_tags'] = array('HTML5-Elemente', 'Hier können Sie die Liste der HTMl5-Elemente für die Extension semantic_html5 um eigene Elemente erweitern.');
