@@ -43,22 +43,22 @@ else
 }
 
 // Callbacks
-$GLOBALS['TL_DCA']['tl_content']['config']['onsubmit_callback'][] = array('tl_content_semantic_html5', 'onsubmitCallback');
-$GLOBALS['TL_DCA']['tl_content']['config']['ondelete_callback'][] = array('tl_content_semantic_html5', 'ondeleteCallback');
+$GLOBALS['TL_DCA']['tl_content']['config']['onsubmit_callback'][] = array('tl_content_sh5', 'onsubmitCallback');
+$GLOBALS['TL_DCA']['tl_content']['config']['ondelete_callback'][] = array('tl_content_sh5', 'ondeleteCallback');
 
 // Fields
 $GLOBALS['TL_DCA']['tl_content']['fields']['sh5_type'] = array
     (
     'label'             => &$GLOBALS['TL_LANG']['tl_content']['sh5_type'],
     'inputType'         => 'select',
-    'options_callback'  => array('tl_content_semantic_html5', 'optionsCallbackType'),
+    'options_callback'  => array('tl_content_sh5', 'optionsCallbackType'),
     'eval'              => array('submitOnChange' => true, 'mandatory' => true, 'includeBlankOption' => true)
 );
 
 /**
  * Class tl_content_semantic_html5
  */
-class tl_content_semantic_html5 extends tl_content
+class tl_content_sh5 extends tl_content
 {
 
     /**
