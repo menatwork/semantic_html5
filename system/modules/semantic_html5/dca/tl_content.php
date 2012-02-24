@@ -51,7 +51,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['sh5_type'] = array
     (
     'label'             => &$GLOBALS['TL_LANG']['tl_content']['sh5_type'],
     'inputType'         => 'select',
-    'options_callback'  => array('tl_content_semantic_html5', 'sh5TypeOptionsCallback'),
+    'options_callback'  => array('tl_content_semantic_html5', 'optionsCallbackType'),
     'eval'              => array('submitOnChange' => true, 'mandatory' => true, 'includeBlankOption' => true)
 );
 
@@ -95,7 +95,7 @@ class tl_content_semantic_html5 extends tl_content
      * 
      * @return array
      */
-    public function sh5TypeOptionsCallback()
+    public function optionsCallbackType()
     {
         $arrCustomerTags = array();
         if(strlen($GLOBALS['TL_CONFIG']['sh5_customer_tags']))
