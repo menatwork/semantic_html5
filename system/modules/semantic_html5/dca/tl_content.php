@@ -78,7 +78,7 @@ class tl_content_sh5 extends tl_content
         {
             // Get current element
             $objElem = $objDatabase
-                    ->prepare("SELECT * FROM `tl_content` WHERE id = ?")
+                    ->prepare("SELECT * FROM tl_content WHERE id = ?")
                     ->limit(1)
                     ->execute($intId);
 
@@ -120,20 +120,21 @@ class tl_content_sh5 extends tl_content
     {        
         // Get current element
         $objElemStart = $this->Database
-                ->prepare("SELECT * FROM `tl_content` WHERE id = ?")
+                ->prepare("SELECT * FROM tl_content WHERE id = ?")
                 ->limit(1)
                 ->execute($dc->id);
 
         if ($objElemStart->type == 'semantic_html5' && $objElemStart->sh5_tag == 'start')
         {
             $objElemEnd = $this->Database
-                    ->prepare("SELECT * FROM `tl_content` WHERE id = ?")
+                    ->prepare("SELECT * FROM tl_content WHERE sh5_pid = ?")
                     ->limit(1)
-                    ->execute($objElemStart->id + 1);
+                    ->execute($dc->id);
 
             // Create Set array for insert and update end tag in database
             $arrSet = $objElemStart->reset()->fetchAssoc();
-            $arrSet['sh5_tag'] = 'end';
+			$arrSet['sh5_pid'] = $dc->id;
+            $arrSet['sh5_tag'] = 'end';			
             unset($arrSet['id']);
 
             if ($objElemEnd->sh5_tag == 'end')
@@ -143,7 +144,7 @@ class tl_content_sh5 extends tl_content
 
                 // Update end tag
                 $this->Database
-                        ->prepare("UPDATE `tl_content` %s WHERE id = ?")
+                        ->prepare("UPDATE tl_content %s WHERE id = ?")
                         ->set($arrSet)
                         ->execute($objElemEnd->id);
             }
@@ -153,7 +154,7 @@ class tl_content_sh5 extends tl_content
 
                 // Insert end tag
                 $this->Database
-                        ->prepare("INSERT INTO `tl_content` %s")
+                        ->prepare("INSERT INTO tl_content %s")
                         ->set($arrSet)
                         ->execute();
             }
@@ -168,22 +169,27 @@ class tl_content_sh5 extends tl_content
     public function ondeleteCallback(DataContainer $dc)
     {
         $objElem = $this->Database
-                ->prepare("SELECT * FROM `tl_content` WHERE id = ?")
+                ->prepare("SELECT * FROM tl_content WHERE id = ?")
                 ->limit(1)
                 ->execute($dc->id);
 
         if ($objElem->type == 'semantic_html5' && $objElem->sh5_tag == 'start')
         {
-            $intId = $dc->id + 1;
+			$this->Database
+					->prepare("DELETE FROM tl_content WHERE sh5_pid = ?")
+					->execute($dc->id);			
         }
         else
         {
-            $intId = $dc->id - 1;
+			$objElemEnd = $this->Database
+                ->prepare("SELECT * FROM tl_content WHERE id = ?")
+                ->limit(1)
+                ->execute($dc->id);
+		
+            $this->Database
+					->prepare("DELETE FROM tl_content WHERE id = ?")
+					->execute($objElemEnd->sh5_pid);
         }
-
-        $this->Database
-                ->prepare("DELETE FROM `tl_content` WHERE id = ?")
-                ->execute($intId);
     }
 
 }
