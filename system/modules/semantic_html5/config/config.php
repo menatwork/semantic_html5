@@ -1,5 +1,4 @@
-<?php if (!defined('TL_ROOT'))
-    die('You cannot access this file directly!');
+<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
 
 /**
  * Contao Open Source CMS
@@ -34,7 +33,7 @@ $GLOBALS['TL_CTE']['texts']['semantic_html5'] = 'SemanticHTML5';
 
 $GLOBALS['TL_HTML5'] = array(
     'article'   => 'article',
-	'aside' 	=> 'aside',
+    'aside' 	=> 'aside',
     'footer'    => 'footer',
     'header'    => 'header',
     'hgroup'    => 'hgroup',    
