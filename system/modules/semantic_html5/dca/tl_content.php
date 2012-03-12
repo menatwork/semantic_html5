@@ -1,5 +1,4 @@
-<?php if (!defined('TL_ROOT')) 
-    die('You cannot access this file directly!');
+<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
 
 /**
  * Contao Open Source CMS
@@ -27,11 +26,11 @@
  * @license    GNU/GPL 2
  * @filesource
  */
-
+ 
 /**
  * Table tl_content 
  */
-
+ 
 // Palettes
 if (tl_content_sh5::checkForTag())
 {
@@ -68,10 +67,10 @@ class tl_content_sh5 extends tl_content
      */
     public static function checkForTag()
     {
-        $objInput = Input::getInstance();
+        $objInput    = Input::getInstance();
         $objDatabase = Database::getInstance();
 
-        $intId = $objInput->get('id');
+        $intId  = $objInput->get('id');
         $strAct = $objInput->get('act');
 
         if ($strAct == 'edit')
@@ -84,12 +83,22 @@ class tl_content_sh5 extends tl_content
 
             if ($objElem->sh5_tag == 'end')
             {
-                return FALSE;
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
-        return TRUE;
+
+        if ($strAct == 'editAll')
+        {
+            return false;
+        }
+
+        return false;
     }
-    
+
     /**
      * Merge the default-tags and the customer-tags array together and return them
      * 
@@ -98,65 +107,82 @@ class tl_content_sh5 extends tl_content
     public function optionsCallbackType()
     {
         $arrCustomerTags = array();
-        if(strlen($GLOBALS['TL_CONFIG']['sh5_customer_tags']))
+        if (strlen($GLOBALS['TL_CONFIG']['sh5_customer_tags']))
         {
-            $arrCustomerTags = explode(',', $GLOBALS['TL_CONFIG']['sh5_customer_tags']);
-            foreach($arrCustomerTags AS $k => $v)
+            $arrCustomerTags = trimsplit(',', $GLOBALS['TL_CONFIG']['sh5_customer_tags']);
+
+            foreach ($arrCustomerTags AS $k => $v)
             {
-                $arrCustomerTags[$k] = trim($v);
+                $arrCustomerTags[$k] = $v;
             }
         }
-        
+
         return array_merge(array_keys($GLOBALS['TL_HTML5']), $arrCustomerTags);
     }
 
     /**
-     * Insert tl_content semantic_html5_end element after the current if not
-     * exists and update if exists
+     * Insert tl_content semantic_html5_end element after the current if not exists and update if exists
      * 
      * @param DataContainer $dc 
      */
     public function onsubmitCallback(DataContainer $dc)
-    {        
-        // Get current element
-        $objElemStart = $this->Database
-                ->prepare("SELECT * FROM tl_content WHERE id = ?")
-                ->limit(1)
-                ->execute($dc->id);
+    {
+        // Get current record
+        $objElement = $dc->activeRecord;
 
-        if ($objElemStart->type == 'semantic_html5' && $objElemStart->sh5_tag == 'start')
+        // Chack if we have a semantic_html5 start element
+        if ($objElement->type == 'semantic_html5' && $objElement->sh5_tag == 'start')
         {
-            $objElemEnd = $this->Database
-                    ->prepare("SELECT * FROM tl_content WHERE sh5_pid = ?")
+            // Check if we have allready a semantic_html end tag
+            $objElementEnd = $this->Database
+                    ->prepare("SELECT * FROM tl_content WHERE sh5_pid=? AND type='semantic_html5' AND sh5_tag='end'")
                     ->limit(1)
-                    ->execute($dc->id);
+                    ->execute($objElement->id);
 
-            // Create Set array for insert and update end tag in database
-            $arrSet = $objElemStart->reset()->fetchAssoc();
-			$arrSet['sh5_pid'] = $dc->id;
-            $arrSet['sh5_tag'] = 'end';			
-            unset($arrSet['id']);
-
-            if ($objElemEnd->sh5_tag == 'end')
+            // If we have no end tag, create one
+            if ($objElementEnd->numRows == 0)
             {
-                unset($arrSet['sorting']);
-                $arrSet['sh5_type'] = $this->Input->post('sh5_type');
-
-                // Update end tag
-                $this->Database
-                        ->prepare("UPDATE tl_content %s WHERE id = ?")
-                        ->set($arrSet)
-                        ->execute($objElemEnd->id);
-            }
-            else
-            {
-                $arrSet['sorting'] += 1;
+                // Build a new end element
+                $arrNewElementEnd            = $objElement->fetchAllAssoc();
+                $arrNewElementEnd            = $arrNewElementEnd[0];
+                $arrNewElementEnd['sh5_pid'] = $objElement->id;
+                $arrNewElementEnd['sh5_tag'] = 'end';
+                $arrNewElementEnd['sorting'] += 1;
+                unset($arrNewElementEnd['id']);
 
                 // Insert end tag
                 $this->Database
                         ->prepare("INSERT INTO tl_content %s")
-                        ->set($arrSet)
-                        ->execute();
+                        ->set($arrNewElementEnd)
+                        ->executeUncached();
+            }
+            // Else update endtag
+            else
+            {
+                // Update endTag with sh5_type
+                $this->Database
+                        ->prepare("UPDATE tl_content %s WHERE sh5_pid=?")
+                        ->set(array('sh5_type' => $objElement->sh5_type))
+                        ->executeUncached($objElement->id);
+            }
+        }
+        // Check if the current element has a semantic_html5 end tag and delete it.
+        else
+        {
+            $objElementsEnd = $this->Database
+                    ->prepare("SELECT * FROM tl_content WHERE sh5_pid=? AND type='semantic_html5' AND sh5_tag='end'")
+                    ->execute($objElement->id);
+
+            if ($objElementsEnd->numRows != 0)
+            {
+                while ($objElementsEnd->next())
+                {
+                    $this->insertUndo("DELETE FROM tl_content WHERE id=" . $objElementsEnd->id, "SELECT * FROM tl_content WHERE id = " . $objElementsEnd->id, "tl_content");
+
+                    $this->Database
+                            ->prepare("DELETE FROM tl_content WHERE id = ?")
+                            ->execute($objElementsEnd->id);
+                }
             }
         }
     }
@@ -168,28 +194,71 @@ class tl_content_sh5 extends tl_content
      */
     public function ondeleteCallback(DataContainer $dc)
     {
-        $objElem = $this->Database
-                ->prepare("SELECT * FROM tl_content WHERE id = ?")
-                ->limit(1)
-                ->execute($dc->id);
+        // Get current record
+        $objElement = $dc->activeRecord;
 
-        if ($objElem->type == 'semantic_html5' && $objElem->sh5_tag == 'start')
+        // Check if we have a semantic_html5 start or end element
+        if ($objElement->type == 'semantic_html5' && $objElement->sh5_tag == 'start')
         {
-			$this->Database
-					->prepare("DELETE FROM tl_content WHERE sh5_pid = ?")
-					->execute($dc->id);			
+            $objEndElement = $this->Database
+                    ->prepare("SELECT * FROM tl_content WHERE sh5_pid=?  AND type='semantic_html5' AND sh5_tag='end'")
+                    ->execute($objElement->id);
+
+            // Check if we have a end element
+            if ($objEndElement->numRows != 0)
+            {
+                $this->insertUndo("DELETE FROM tl_content WHERE sh5_pid=" . $objElement->id, "SELECT * FROM tl_content WHERE sh5_pid = " . $objElement->id, "tl_content");
+
+                $this->Database
+                        ->prepare("DELETE FROM tl_content WHERE sh5_pid = ?")
+                        ->execute($objElement->id);
+            }
         }
-        else
+        else if ($objElement->type == 'semantic_html5' && $objElement->sh5_tag == 'end')
         {
-			$objElemEnd = $this->Database
-                ->prepare("SELECT * FROM tl_content WHERE id = ?")
-                ->limit(1)
-                ->execute($dc->id);
-		
-            $this->Database
-					->prepare("DELETE FROM tl_content WHERE id = ?")
-					->execute($objElemEnd->sh5_pid);
+            $objStartElement = $this->Database
+                    ->prepare("SELECT * FROM tl_content WHERE id=? AND type='semantic_html5' AND sh5_tag='start'")
+                    ->executeUncached($objElement->sh5_pid);
+
+            // Check if we have a start element
+            if ($objStartElement->numRows != 0)
+            {
+                $this->insertUndo("DELETE FROM tl_content WHERE id=" . $objElement->sh5_pid, "SELECT * FROM tl_content WHERE id = " . $objElement->sh5_pid, "tl_content");
+
+                $this->Database
+                        ->prepare("DELETE FROM tl_content WHERE id = ?")
+                        ->execute($objElement->sh5_pid);
+            }
         }
+    }
+
+    protected function insertUndo($strSourceSQL, $strSaveSQL, $strTable)
+    {
+        // Load row
+        $arrResult = $this->Database
+                ->prepare($strSaveSQL)
+                ->executeUncached()
+                ->fetchAllAssoc();
+
+        // Check if we have a result
+        if (count($arrResult) == 0)
+        {
+            return;
+        }
+
+        // Save information in array
+        $arrSave = array();
+        foreach ($arrResult as $value)
+        {
+            $arrSave[$strTable][] = $value;
+        }
+        
+        $strPrefix = '<span style="color:#b3b3b3; padding-right:3px;">(semantic_html5)</span>';
+
+        // Write into undo
+        $this->Database
+                ->prepare("INSERT INTO tl_undo (pid, tstamp, fromTable, query, affectedRows, data) VALUES (?, ?, ?, ?, ?, ?)")
+                ->execute($this->User->id, time(), $strTable, $strPrefix . $strSourceSQL, count($arrSave[$strTable]), serialize($arrSave));
     }
 
 }
