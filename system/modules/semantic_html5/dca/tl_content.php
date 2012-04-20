@@ -148,6 +148,13 @@ class tl_content_sh5 extends tl_content
                 $arrNewElementEnd['sh5_pid'] = $objElement->id;
                 $arrNewElementEnd['sh5_tag'] = 'end';
                 $arrNewElementEnd['sorting'] += 1;
+                
+                // Support GlobalContentelements extension if installed
+				if(in_array('GlobalContentelements',$this->Config->getActiveModules()))
+				{
+					$arrNewElementEnd['do'] = $this->Input->get('do');
+				}
+				
                 unset($arrNewElementEnd['id']);
 
                 // Insert end tag
