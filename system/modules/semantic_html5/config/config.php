@@ -26,11 +26,18 @@
  * @license    GNU/GPL 2
  * @filesource
  */
+
 /**
  * Content Element
  */
 $GLOBALS['TL_CTE']['texts']['semantic_html5'] = 'SemanticHTML5';
 
+/**
+ * Takes all available tags
+ * 
+ * @global array $GLOBALS['TL_HTML5']
+ * @name $TL_HTML5 
+ */
 $GLOBALS['TL_HTML5'] = array(
     'article'   => 'article',
     'aside' 	=> 'aside',

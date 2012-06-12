@@ -1,5 +1,4 @@
-<?php if (!defined('TL_ROOT')) 
-    die('You cannot access this file directly!');
+<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
 
 /**
  * Contao Open Source CMS
@@ -24,17 +23,10 @@
  * PHP version 5
  * @copyright  MEN AT WORK 2012
  * @package    semantic_html5
- * @license    GNU/LGPL
+ * @license    GNU/GPL 2
  * @filesource
  */
 
-/**
- * Texts
- */
-$GLOBALS['TL_LANG']['CTE']['semantic_html5'] = array('HTML5-Element','');
+$GLOBALS['TL_DCA']['tl_page']['config']['oncopy_callback'][] = array('SemanticHTML5Helper','onPageCopyCallback');
 
-/**
- * Error 
- */
-$GLOBALS['TL_LANG']['ERR']['sh5']['delete_end_tag']     = 'Der End Tag konnte nich gelöscht werde da kein zugehöriges Start Tag vorhanden ist';
-$GLOBALS['TL_LANG']['ERR']['sh5']['delete_start_tag']   = 'Der Start Tag konnte nich gelöscht werde da kein zugehöriges End Tag vorhanden ist'; 
+?>
