@@ -214,20 +214,6 @@ class tl_content_sh5 extends tl_content
                         ->prepare("DELETE FROM tl_content WHERE id = ?")
                         ->execute($objEndElement->id);
             }
-            else
-            {              
-                if (!is_array($_SESSION["TL_ERROR"]))
-                {
-                    $_SESSION["TL_ERROR"] = array();
-                }
-
-                if (!array_key_exists('sh5_delete_end_tag', $_SESSION["TL_ERROR"]))
-                {
-                    $_SESSION["TL_ERROR"]['sh5_delete_end_tag'] = $GLOBALS['TL_LANG']['ERR']['sh5']['delete_end_tag'];
-                }
-
-                $this->redirect($this->getReferer());
-            }
         }
         else if ($objElement->type == 'semantic_html5' && $objElement->sh5_tag == 'end')
         {
@@ -244,20 +230,6 @@ class tl_content_sh5 extends tl_content
                 $this->Database
                         ->prepare("DELETE FROM tl_content WHERE id = ?")
                         ->execute($objStartElement->id);
-            }
-            else
-            {
-                if (!is_array($_SESSION["TL_ERROR"]))
-                {
-                    $_SESSION["TL_ERROR"] = array();
-                }
-
-                if (!array_key_exists('sh5_delete_start_tag', $_SESSION["TL_ERROR"]))
-                {
-                    $_SESSION["TL_ERROR"]['sh5_delete_start_tag'] = $GLOBALS['TL_LANG']['ERR']['sh5']['delete_start_tag'];
-                }
-
-                $this->redirect($this->getReferer());
             }
         }
     }

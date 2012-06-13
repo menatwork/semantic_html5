@@ -1,5 +1,4 @@
-<?php if (!defined('TL_ROOT')) 
-    die('You cannot access this file directly!');
+<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
 
 /**
  * Contao Open Source CMS
@@ -29,12 +28,6 @@
  */
 
 /**
- * Texts
+ * Text
  */
 $GLOBALS['TL_LANG']['CTE']['semantic_html5'] = array('HTML5-Element','');
-
-/**
- * Error 
- */
-$GLOBALS['TL_LANG']['ERR']['sh5']['delete_end_tag']     = 'Der End Tag konnte nich gelöscht werde da kein zugehöriges Start Tag vorhanden ist';
-$GLOBALS['TL_LANG']['ERR']['sh5']['delete_start_tag']   = 'Der Start Tag konnte nich gelöscht werde da kein zugehöriges End Tag vorhanden ist'; 
