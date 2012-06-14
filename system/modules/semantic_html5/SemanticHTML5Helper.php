@@ -210,8 +210,15 @@ class SemanticHTML5Helper extends Backend
             {
                 if ($objActiveRecord->sh5_tag == 'start')
                 {
-                    $strSessionName = 'sh5_starttag_' . $objActiveRecord->sh5_pid;
-
+                    $intPid = $objActiveRecord->sh5_pid;
+                    
+                    $arrSession = deserialize($this->Session->get('semantic_html5'));
+                    
+                    if(!is_array($arrSession))
+                    {
+                        $arrSession = array();
+                    }
+                    
                     $this->Database->prepare("UPDATE tl_content %s WHERE id = ?")
                             ->set(array('sh5_pid' => $objActiveRecord->id))
                             ->execute($intId);
@@ -223,35 +230,45 @@ class SemanticHTML5Helper extends Backend
                     // Create placeholder if no end tag was copied
                     $intlastId = $this->createEndTag($objContent);
 
-                    $arrSession = array(
+                    $arrSession[$intPid] = array(
                         'sh5_pid' => $objActiveRecord->id,
                         'id' => $intlastId
                     );
-
-                    $this->Session->set($strSessionName, $arrSession);
+                    
+                    $this->Session->set('semantic_html5', serialize($arrSession));
                 }
                 else if ($objActiveRecord->sh5_tag == 'end')
                 {
-                    $arrSession = $this->Session->get('sh5_starttag_' . $objActiveRecord->sh5_pid);
-                    $this->Session->set('sh5_starttag_' . $objActiveRecord->sh5_pid, NULL);
+                    $arrSession = deserialize($this->Session->get('semantic_html5'));
 
-                    if (is_array($arrSession))
+                    if(!is_array($arrSession))
                     {
+                        $arrSession = array();
+                    }
+                    
+                    if (array_key_exists($objActiveRecord->sh5_pid, $arrSession))
+                    {
+                        $arrSet = $arrSession[$objActiveRecord->sh5_pid];
+                        
                         // Delete placeholder end tag
                         $this->Database
                                 ->prepare("DELETE FROM tl_content WHERE id = ?")
-                                ->execute($arrSession['id']);
+                                ->execute($arrSet['id']);
 
                         // Update end tag
                         $this->Database
                                 ->prepare("UPDATE tl_content %s WHERE id = ?")
-                                ->set(array('sh5_pid' => $arrSession['sh5_pid']))
+                                ->set(array('sh5_pid' => $arrSet['sh5_pid']))
                                 ->execute($intId);
+                        
+                        unset($arrSession[$objActiveRecord->sh5_pid]);
                     }
                     else
                     {
                         $this->createStartTag($objActiveRecord);
                     }
+                    
+                    $this->Session->set('semantic_html5', serialize($arrSession));
                 }
             }
         }
