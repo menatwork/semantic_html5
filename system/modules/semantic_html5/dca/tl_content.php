@@ -1,4 +1,7 @@
-<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
+<?php
+
+if (!defined('TL_ROOT'))
+    die('You cannot access this file directly!');
 
 /**
  * Contao Open Source CMS
@@ -26,7 +29,6 @@
  * @license    GNU/GPL 2
  * @filesource
  */
-
 /**
  * Table tl_content 
  */
@@ -78,7 +80,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['sh5_tag'] = array
 class tl_content_sh5 extends tl_content
 {
 
-    static $arrSemanticStack = array();
+    protected static $arrContentElements = null;
 
     /**
      * Add the type of content element
@@ -87,26 +89,48 @@ class tl_content_sh5 extends tl_content
      */
     public function addCteType($arrRow)
     {
+        // Build level for all elements
+        if (self::$arrContentElements == null)
+        {
+            $arrSh5Stack = array();
+            self::$arrContentElements = array();
+
+            $arrResult = $this->Database
+                    ->prepare('SELECT * FROM tl_content WHERE pid=? ORDER BY sorting')
+                    ->execute($this->Input->get('id'))
+                    ->fetchAllAssoc();
+
+            foreach ($arrResult as $value)
+            {
+                // Check for sh5 start and end tags
+                if ($value['type'] == 'semantic_html5' && $value['sh5_tag'] == 'start')
+                {
+                    $arrSh5Stack[$value['id']] = true;
+                }
+
+                // Add level setting
+                if (count($arrSh5Stack) != 0)
+                {
+                    self::$arrContentElements[$value['id']] = count($arrSh5Stack);
+                }
+
+                if ($value['type'] == 'semantic_html5' && $value['sh5_tag'] == 'end')
+                {
+                    unset($arrSh5Stack[$value['sh5_pid']]);
+                }
+            }
+        }
 
         $strReturn = '';
 
-        // Check for sh5 start and end tags
-        if ($arrRow['type'] == 'semantic_html5' && $arrRow['sh5_tag'] == 'start')
-        {
-            self::$arrSemanticStack[$arrRow['id']] = true;
-        }
-
         // Add rendering settings
-        if (count(self::$arrSemanticStack) == 0)
+        if (count(self::$arrContentElements) != 0 && key_exists($arrRow['id'], self::$arrContentElements))
         {
-            $strReturn = parent::addCteType($arrRow);
-        }
-        else
-        {
+            $intLevel = self::$arrContentElements[$arrRow['id']];
 
             if ($arrRow['type'] == 'semantic_html5')
             {
-                for ($i = 0; $i < count(self::$arrSemanticStack); $i++)
+                for ($i = 0; $i < $intLevel; $i++)
                 {
                     if ($i == 0)
                     {
@@ -120,14 +144,14 @@ class tl_content_sh5 extends tl_content
 
                 $strReturn .= parent::addCteType($arrRow);
 
-                for ($i = 0; $i < count(self::$arrSemanticStack); $i++)
+                for ($i = 0; $i < $intLevel; $i++)
                 {
                     $strReturn .= '</div>';
                 }
             }
             else
             {
-                for ($i = 0; $i < count(self::$arrSemanticStack) + 1; $i++)
+                for ($i = 0; $i < $intLevel + 1; $i++)
                 {
                     if ($i == 0)
                     {
@@ -141,16 +165,15 @@ class tl_content_sh5 extends tl_content
 
                 $strReturn .= parent::addCteType($arrRow);
 
-                for ($i = 0; $i < count(self::$arrSemanticStack); $i++)
+                for ($i = 0; $i < $intLevel + 1; $i++)
                 {
                     $strReturn .= '</div>';
                 }
             }
         }
-
-        if ($arrRow['type'] == 'semantic_html5' && $arrRow['sh5_tag'] == 'end')
+        else
         {
-            unset(self::$arrSemanticStack[$arrRow['sh5_pid']]);
+            $strReturn = parent::addCteType($arrRow);
         }
 
         return $strReturn;
@@ -351,4 +374,5 @@ class tl_content_sh5 extends tl_content
     }
 
 }
+
 ?>
