@@ -86,7 +86,7 @@ class tl_content_sh5 extends tl_content
     {
         $objInput = Input::getInstance();
 
-        if ($objInput->get('act') == 'edit')
+        if ($objInput->get('act') == 'edit' || $objInput->get('act') == 'editAll')
         {
             // Get current element
             $objElem = Database::getInstance()
