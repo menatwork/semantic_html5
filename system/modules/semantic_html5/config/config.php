@@ -36,6 +36,8 @@ $GLOBALS['TL_CTE']['texts']['semantic_html5'] = 'SemanticHTML5';
  * Hooks
  */
 $GLOBALS['TL_HOOKS']['clipboardContentTitle'][] = array('SemanticHTML5Helper', 'clipboardContentTitle');
+$GLOBALS['TL_HOOKS']['clipboardCopy'][] = array('SemanticHTML5Helper', 'clipboardCopy');
+$GLOBALS['TL_HOOKS']['clipboardCopyAll'][] = array('SemanticHTML5Helper', 'clipboardCopyAll');
 
 /**
  * Takes all available tags

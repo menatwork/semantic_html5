@@ -202,10 +202,10 @@ class SemanticHTML5Helper extends Backend
      */
     public function onContentCopyCallback($intId, DataContainer $dc)
     {
-        $objActiveRecord = $this->Database->prepare("SELECT * FROM tl_content WHERE id = ?")->executeUncached($intId);
-
         if ($this->Input->get('act') == 'copyAll')
-        {
+        {                
+            $objActiveRecord = $this->Database->prepare("SELECT * FROM tl_content WHERE id = ?")->executeUncached($intId);
+
             if ($objActiveRecord->type == 'semantic_html5')
             {
                 if ($objActiveRecord->sh5_tag == 'start')
@@ -356,7 +356,61 @@ class SemanticHTML5Helper extends Backend
         }
         
         return NULL;
-    }    
+    }
+    
+    /**
+     * 
+     * HOOK: $GLOBALS['TL_HOOKS']['clipboardCopy']
+     * 
+     * @param integer $intId
+     * @param datacontainer $dc
+     * @param array $objDb
+     * @param boolean $isGrouped
+     */
+    public function clipboardCopy($intId, datacontainer $dc, $isGrouped)
+    {
+        if(!$isGrouped)
+        {
+            $objActiveRecord = $this->Database
+                    ->prepare("SELECT * FROM tl_content WHERE id = ?")
+                    ->executeUncached($intId);
+            
+            if ($objActiveRecord->type == 'semantic_html5')
+            {
+                if ($objActiveRecord->sh5_tag == 'start')
+                {
+                    $this->Database->prepare("UPDATE tl_content %s WHERE id = ?")
+                            ->set(array('sh5_pid' => $objActiveRecord->id))
+                            ->execute($intId);
+
+                    $objContent = $this->Database
+                            ->prepare("Select * FROM tl_content WHERE id = ?")
+                            ->execute($intId);
+
+                    // Create placeholder if no end tag was copied
+                    $this->createEndTag($objContent);
+                }
+                else
+                {
+                    $this->createStartTag($objActiveRecord);
+                }
+            }
+        }
+    }
+    
+    /**
+     * 
+     * HOOK: $GLOBALS['TL_HOOKS']['clipboardCopyAll']
+     * 
+     * @param array $arrIds
+     */
+    public function clipboardCopyAll($arrIds)
+    {
+        foreach(array_keys(array_flip($arrIds)) as $intId)
+        {
+            $this->updateContentElem($intId);
+        }
+    }
 
 }
 
