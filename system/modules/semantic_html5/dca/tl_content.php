@@ -30,6 +30,7 @@
 /**
  * Table tl_content 
  */
+$GLOBALS['TL_DCA']['tl_content']['list']['sorting']['child_record_callback'] = array('tl_content_sh5', 'addCteType');
 
 /**
  * Palettes
@@ -55,10 +56,10 @@ $GLOBALS['TL_DCA']['tl_content']['config']['oncopy_callback'][] = array('Semanti
  */
 $GLOBALS['TL_DCA']['tl_content']['fields']['sh5_type'] = array
     (
-    'label' => &$GLOBALS['TL_LANG']['tl_content']['sh5_type'],
-    'inputType' => 'select',
+    'label'            => &$GLOBALS['TL_LANG']['tl_content']['sh5_type'],
+    'inputType'        => 'select',
     'options_callback' => array('tl_content_sh5', 'optionsCallbackType'),
-    'eval' => array('submitOnChange' => true, 'mandatory' => true, 'includeBlankOption' => true)
+    'eval' => array('submitOnChange'     => true, 'mandatory'          => true, 'includeBlankOption' => true)
 );
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['sh5_pid'] = array
@@ -76,6 +77,84 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['sh5_tag'] = array
  */
 class tl_content_sh5 extends tl_content
 {
+
+    static $arrSemanticStack = array();
+
+    /**
+     * Add the type of content element
+     * @param array
+     * @return string
+     */
+    public function addCteType($arrRow)
+    {
+
+        $strReturn = '';
+
+        // Check for sh5 start and end tags
+        if ($arrRow['type'] == 'semantic_html5' && $arrRow['sh5_tag'] == 'start')
+        {
+            self::$arrSemanticStack[$arrRow['id']] = true;
+        }
+
+        // Add rendering settings
+        if (count(self::$arrSemanticStack) == 0)
+        {
+            $strReturn = parent::addCteType($arrRow);
+        }
+        else
+        {
+
+            if ($arrRow['type'] == 'semantic_html5')
+            {
+                for ($i = 0; $i < count(self::$arrSemanticStack); $i++)
+                {
+                    if ($i == 0)
+                    {
+                        $strReturn .= '<div class="sh5-tag sh5-level-' . $i . '">';
+                    }
+                    else
+                    {
+                        $strReturn .= '<div class="sh5-tag sh5-level-' . $i . '" style="margin-left:20px;">';
+                    }
+                }
+
+                $strReturn .= parent::addCteType($arrRow);
+
+                for ($i = 0; $i < count(self::$arrSemanticStack); $i++)
+                {
+                    $strReturn .= '</div>';
+                }
+            }
+            else
+            {
+                for ($i = 0; $i < count(self::$arrSemanticStack) + 1; $i++)
+                {
+                    if ($i == 0)
+                    {
+                        $strReturn .= '<div class="sh5-content sh5-level-' . $i . '">';
+                    }
+                    else
+                    {
+                        $strReturn .= '<div class="sh5-content sh5-level-' . $i . '" style="margin-left:20px;">';
+                    }
+                }
+
+                $strReturn .= parent::addCteType($arrRow);
+
+                for ($i = 0; $i < count(self::$arrSemanticStack); $i++)
+                {
+                    $strReturn .= '</div>';
+                }
+            }
+        }
+
+        if ($arrRow['type'] == 'semantic_html5' && $arrRow['sh5_tag'] == 'end')
+        {
+            unset(self::$arrSemanticStack[$arrRow['sh5_pid']]);
+        }
+
+        return $strReturn;
+    }
 
     /**
      * Check the current element and return false if is semantic_html5 endtag
@@ -272,5 +351,4 @@ class tl_content_sh5 extends tl_content
     }
 
 }
-
 ?>
