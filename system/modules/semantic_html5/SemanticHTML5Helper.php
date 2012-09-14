@@ -337,6 +337,26 @@ class SemanticHTML5Helper extends Backend
                         ->execute($intId);
         }
     }
+    
+    /**
+     * Return sh5 type clipboard title
+     * HOOK: $GLOBALS['TL_HOOKS']['clipboardContentTitle']
+     * 
+     * @param ClipboardHelper $objClipboardHelper
+     * @param string $strHeadline
+     * @param DB_Mysql_Result $objContent
+     * @param boolean $booClGroup
+     * @return mixed
+     */
+    public function clipboardContentTitle(ClipboardHelper $objClipboardHelper, $strHeadline, DB_Mysql_Result $objContent, $booClGroup)
+    {        
+        if($objContent->type == 'semantic_html5')
+        {            
+            return ((!$booClGroup) ? ucfirst($objContent->sh5_tag) : '') . ' ' . strtoupper($objContent->sh5_type);
+        }
+        
+        return NULL;
+    }    
 
 }
 
