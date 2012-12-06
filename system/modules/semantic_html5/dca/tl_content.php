@@ -125,7 +125,7 @@ class tl_content_sh5 extends tl_content
         $strReturn = '';
 
         // Add rendering settings
-        if (count(self::$arrContentElements) != 0 && key_exists($arrRow['id'], self::$arrContentElements))
+        if (count(self::$arrContentElements) != 0 && array_key_exists($arrRow['id'], self::$arrContentElements))
         {
             $intLevel = self::$arrContentElements[$arrRow['id']];
 
