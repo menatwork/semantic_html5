@@ -96,9 +96,20 @@ class tl_content_sh5 extends tl_content
             $arrSh5Stack = array();
             self::$arrContentElements = array();
 
+			// Support GlobalContentelements extension if installed
+			$where = array('',null);
+			if(in_array('GlobalContentelements', $this->Config->getActiveModules()))
+			{
+				$where = array
+				(
+					' AND do=?',
+					$this->Input->get('do')
+				);
+			}
+
             $arrResult = $this->Database
-                    ->prepare('SELECT * FROM tl_content WHERE pid=? ORDER BY sorting')
-                    ->execute($this->Input->get('id'))
+                    ->prepare('SELECT * FROM tl_content WHERE pid=?'.$where[0].' ORDER BY sorting')
+                    ->execute($this->Input->get('id'),$where[1])
                     ->fetchAllAssoc();
 
             foreach ($arrResult as $value)
