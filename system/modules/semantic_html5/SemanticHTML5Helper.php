@@ -78,6 +78,7 @@ class SemanticHTML5Helper extends Backend
         unset($arrEndTag['id']);
 
         $arrEndTag['sh5_pid'] = $objStartTag->id;
+        $arrEndTag['tstamp'] = time();
         $arrEndTag['sh5_tag'] = 'end';
         $arrEndTag['sorting'] = $objStartTag->sorting + 1;
 
