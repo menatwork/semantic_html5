@@ -78,6 +78,7 @@ class SemanticHTML5Helper extends Backend
         unset($arrEndTag['id']);
 
         $arrEndTag['sh5_pid'] = $objStartTag->id;
+        $arrEndTag['tstamp'] = time();
         $arrEndTag['sh5_tag'] = 'end';
         $arrEndTag['sorting'] = $objStartTag->sorting + 1;
 
@@ -281,9 +282,20 @@ class SemanticHTML5Helper extends Backend
      */
     protected function updateContentElem($intId)
     {
+        // Support GlobalContentelements extension if installed
+		$where = array('',null);
+        if(in_array('GlobalContentelements', $this->Config->getActiveModules()))
+        {
+            $where = array
+			(
+				' AND do=?',
+				$this->Input->get('do')
+			);
+        }
+
         $objContents = $this->Database
-                ->prepare("SELECT id, pid, type, sh5_pid, sh5_type, sh5_tag FROM tl_content WHERE pid = ? AND type = 'semantic_html5' GROUP BY sorting")
-                ->execute($intId);
+                ->prepare("SELECT id, pid, type, sh5_pid, sh5_type, sh5_tag FROM tl_content WHERE pid = ? AND type = 'semantic_html5'{$where[0]} GROUP BY sorting")
+                ->execute($intId, $where[1]);
 
         if ($objContents->numRows == 0)
         {
