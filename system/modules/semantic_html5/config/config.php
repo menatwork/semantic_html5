@@ -54,3 +54,5 @@ $GLOBALS['TL_HTML5'] = array(
     'section'   => 'section',
     'div'       => 'div'
 );
+
+$GLOBALS['TL_WRAPPERS']['start'][] = 'semantic_html5';
