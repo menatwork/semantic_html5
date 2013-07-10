@@ -1,37 +1,16 @@
 <?php
 
-if (!defined('TL_ROOT'))
-    die('You cannot access this file directly!');
-
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
  *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  MEN AT WORK 2012
+ * @copyright  MEN AT WORK 2013
  * @package    semantic_html5
- * @license    GNU/GPL 2
+ * @license    GNU/LGPL
  * @filesource
  */
 
 /**
- * Table tl_content 
+ * Table tl_content
  */
 $GLOBALS['TL_DCA']['tl_content']['list']['sorting']['child_record_callback'] = array('tl_content_sh5', 'addCteType');
 
@@ -52,27 +31,32 @@ else
  */
 $GLOBALS['TL_DCA']['tl_content']['config']['onsubmit_callback'][] = array('tl_content_sh5', 'onsubmitCallback');
 $GLOBALS['TL_DCA']['tl_content']['config']['ondelete_callback'][] = array('tl_content_sh5', 'ondeleteCallback');
-$GLOBALS['TL_DCA']['tl_content']['config']['oncopy_callback'][] = array('SemanticHTML5Helper', 'onContentCopyCallback');
+$GLOBALS['TL_DCA']['tl_content']['config']['oncopy_callback'][]   = array('SemanticHTML5Helper', 'onContentCopyCallback');
 
 /**
  * Fields
  */
 $GLOBALS['TL_DCA']['tl_content']['fields']['sh5_type'] = array
+(
+    'label'             => &$GLOBALS['TL_LANG']['tl_content']['sh5_type'],
+    'inputType'         => 'select',
+    'options_callback'  => array('tl_content_sh5', 'optionsCallbackType'),
+    'eval'              => array
     (
-    'label'            => &$GLOBALS['TL_LANG']['tl_content']['sh5_type'],
-    'inputType'        => 'select',
-    'options_callback' => array('tl_content_sh5', 'optionsCallbackType'),
-    'eval' => array('submitOnChange'     => true, 'mandatory'          => true, 'includeBlankOption' => true)
+        'submitOnChange'     => true,
+        'mandatory'          => true,
+        'includeBlankOption' => true
+    )
 );
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['sh5_pid'] = array
-    (
-    'inputType' => 'text'
+(
+    'inputType'         => 'text'
 );
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['sh5_tag'] = array
-    (
-    'inputType' => 'text'
+(
+    'inputType'         => 'text'
 );
 
 /**
@@ -96,20 +80,20 @@ class tl_content_sh5 extends tl_content
             $arrSh5Stack = array();
             self::$arrContentElements = array();
 
-			// Support GlobalContentelements extension if installed
-			$where = array('',null);
-			if(in_array('GlobalContentelements', $this->Config->getActiveModules()))
-			{
-				$where = array
-				(
-					' AND do=?',
-					$this->Input->get('do')
-				);
-			}
+            // Support GlobalContentelements extension if installed
+            $where = array('', null);
+            if (in_array('GlobalContentelements', $this->Config->getActiveModules()))
+            {
+                $where = array
+                    (
+                    ' AND do=?',
+                    $this->Input->get('do')
+                );
+            }
 
             $arrResult = $this->Database
-                    ->prepare('SELECT * FROM tl_content WHERE pid=?'.$where[0].' ORDER BY sorting')
-                    ->execute($this->Input->get('id'),$where[1])
+                    ->prepare('SELECT * FROM tl_content WHERE pid=?' . $where[0] . ' ORDER BY sorting')
+                    ->execute($this->Input->get('id'), $where[1])
                     ->fetchAllAssoc();
 
             foreach ($arrResult as $value)
@@ -193,8 +177,8 @@ class tl_content_sh5 extends tl_content
 
     /**
      * Check the current element and return false if is semantic_html5 endtag
-     * 
-     * @return boolean 
+     *
+     * @return boolean
      */
     public static function checkForTag()
     {
@@ -219,7 +203,7 @@ class tl_content_sh5 extends tl_content
 
     /**
      * Merge the default-tags and the customer-tags array together and return them
-     * 
+     *
      * @return array
      */
     public function optionsCallbackType()
@@ -240,8 +224,8 @@ class tl_content_sh5 extends tl_content
 
     /**
      * Insert tl_content semantic_html5_end element after the current if not exists and update if exists
-     * 
-     * @param DataContainer $dc 
+     *
+     * @param DataContainer $dc
      */
     public function onsubmitCallback(DataContainer $dc)
     {
@@ -302,13 +286,13 @@ class tl_content_sh5 extends tl_content
     }
 
     /**
-     * Delets the next tl_content semantic_html5_end element 
-     * 
-     * @param DataContainer $dc 
+     * Delets the next tl_content semantic_html5_end element
+     *
+     * @param DataContainer $dc
      */
     public function ondeleteCallback(DataContainer $dc)
     {
-        // Get current record        
+        // Get current record
         $objElement = $dc->activeRecord;
 
         // Check if we have a semantic_html5 start or end element
@@ -350,11 +334,11 @@ class tl_content_sh5 extends tl_content
 
     /**
      * Insert additional delete from appendant tag to contao undo table
-     * 
+     *
      * @param type $strSourceSQL
      * @param type $strSaveSQL
      * @param type $strTable
-     * @return type 
+     * @return type
      */
     protected function insertUndo($strSourceSQL, $strSaveSQL, $strTable)
     {

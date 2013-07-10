@@ -1,29 +1,11 @@
-<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
+<?php
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
  *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  MEN AT WORK 2012
+ * @copyright  MEN AT WORK 2013
  * @package    semantic_html5
- * @license    GNU/GPL 2
+ * @license    GNU/LGPL
  * @filesource
  */
 
@@ -46,7 +28,7 @@ class RunonceSh5 extends Backend
     }
 
     /**
-     * Run sementic_html5 update 
+     * Run sementic_html5 update
      */
     public function run()
     {
@@ -74,8 +56,8 @@ class RunonceSh5 extends Backend
         foreach ($arrArticleResult AS $pid => $arrContentElems)
         {
             $arrRemainContentElems = $arrContentElems;
-            $arrNoEndTag = array();
-            $arrLastID = count($arrContentElems);
+            $arrNoEndTag           = array();
+            $arrLastID             = count($arrContentElems);
 
             for ($i = 0; $i <= $arrLastID; $i++)
             {
@@ -133,7 +115,7 @@ class RunonceSh5 extends Backend
                 {
                     $strErrorText   = "Could not find a matching semantic_html5 tag for the element (ID: %s) from the article (ID: %s).";
                     $strErrorAction = "Update semantic_html5 tags.";
-                    
+
                     $this->log(
                             sprintf(
                                     $strErrorText, $arrContentElem['id'], $arrContentElem['pid']

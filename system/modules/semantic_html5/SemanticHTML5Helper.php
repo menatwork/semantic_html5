@@ -1,29 +1,11 @@
-<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
+<?php
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
  *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  MEN AT WORK 2012
+ * @copyright  MEN AT WORK 2013
  * @package    semantic_html5
- * @license    GNU/GPL 2
+ * @license    GNU/LGPL
  * @filesource
  */
 
@@ -53,9 +35,9 @@ class SemanticHTML5Helper extends Backend
     final private function __clone(){}
 
     /**
-     * Get instanz of the object (Singelton) 
+     * Get instanz of the object (Singelton)
      *
-     * @return SemanticHTML5Helper 
+     * @return SemanticHTML5Helper
      */
     public static function getInstance()
     {
@@ -68,9 +50,9 @@ class SemanticHTML5Helper extends Backend
 
     /**
      * Create end tag for given start tag
-     * 
+     *
      * @param Database_Result $objStartTag
-     * @return type 
+     * @return type
      */
     public function createEndTag($objStartTag)
     {
@@ -78,7 +60,7 @@ class SemanticHTML5Helper extends Backend
         unset($arrEndTag['id']);
 
         $arrEndTag['sh5_pid'] = $objStartTag->id;
-        $arrEndTag['tstamp'] = time();
+        $arrEndTag['tstamp']  = time();
         $arrEndTag['sh5_tag'] = 'end';
         $arrEndTag['sorting'] = $objStartTag->sorting + 1;
 
@@ -99,7 +81,7 @@ class SemanticHTML5Helper extends Backend
 
     /**
      * Create start tag for given end tag and update it
-     * 
+     *
      * @param Database_Result $objEndTag
      */
     public function createStartTag($objEndTag)
@@ -141,9 +123,9 @@ class SemanticHTML5Helper extends Backend
     /**
      * Function for global tl_page oncopy callback
      * $GLOBALS['TL_DCA']['tl_page']['config']['oncopy_callback']
-     * 
+     *
      * @param integer $intId
-     * @param DataContainer $dc 
+     * @param DataContainer $dc
      */
     public function onPageCopyCallback($intId, DataContainer $dc)
     {
@@ -185,10 +167,10 @@ class SemanticHTML5Helper extends Backend
     /**
      * Function for global tl_article oncopy callback
      * $GLOBALS['TL_DCA']['tl_article']['config']['oncopy_callback']
-     * 
+     *
      * @param integer $intId
-     * @param DataContainer $dc 
-     */    
+     * @param DataContainer $dc
+     */
     public function onArticleCopyCallback($intId, DataContainer $dc)
     {
         $this->updateContentElem($intId);
@@ -197,14 +179,14 @@ class SemanticHTML5Helper extends Backend
     /**
      * Function for global tl_contant oncopy callback
      * $GLOBALS['TL_DCA']['tl_content']['config']['oncopy_callback']
-     * 
+     *
      * @param integer $intId
-     * @param DataContainer $dc 
+     * @param DataContainer $dc
      */
     public function onContentCopyCallback($intId, DataContainer $dc)
     {
         if ($this->Input->get('act') == 'copyAll')
-        {                
+        {
             $objActiveRecord = $this->Database->prepare("SELECT * FROM tl_content WHERE id = ?")->executeUncached($intId);
 
             if ($objActiveRecord->type == 'semantic_html5')
@@ -212,14 +194,14 @@ class SemanticHTML5Helper extends Backend
                 if ($objActiveRecord->sh5_tag == 'start')
                 {
                     $intPid = $objActiveRecord->sh5_pid;
-                    
+
                     $arrSession = deserialize($this->Session->get('semantic_html5'));
-                    
-                    if(!is_array($arrSession))
+
+                    if (!is_array($arrSession))
                     {
                         $arrSession = array();
                     }
-                    
+
                     $this->Database->prepare("UPDATE tl_content %s WHERE id = ?")
                             ->set(array('sh5_pid' => $objActiveRecord->id))
                             ->execute($intId);
@@ -233,24 +215,24 @@ class SemanticHTML5Helper extends Backend
 
                     $arrSession[$intPid] = array(
                         'sh5_pid' => $objActiveRecord->id,
-                        'id' => $intlastId
+                        'id'      => $intlastId
                     );
-                    
+
                     $this->Session->set('semantic_html5', serialize($arrSession));
                 }
                 else if ($objActiveRecord->sh5_tag == 'end')
                 {
                     $arrSession = deserialize($this->Session->get('semantic_html5'));
 
-                    if(!is_array($arrSession))
+                    if (!is_array($arrSession))
                     {
                         $arrSession = array();
                     }
-                    
+
                     if (array_key_exists($objActiveRecord->sh5_pid, $arrSession))
                     {
                         $arrSet = $arrSession[$objActiveRecord->sh5_pid];
-                        
+
                         // Delete placeholder end tag
                         $this->Database
                                 ->prepare("DELETE FROM tl_content WHERE id = ?")
@@ -261,14 +243,14 @@ class SemanticHTML5Helper extends Backend
                                 ->prepare("UPDATE tl_content %s WHERE id = ?")
                                 ->set(array('sh5_pid' => $arrSet['sh5_pid']))
                                 ->execute($intId);
-                        
+
                         unset($arrSession[$objActiveRecord->sh5_pid]);
                     }
                     else
                     {
                         $this->createStartTag($objActiveRecord);
                     }
-                    
+
                     $this->Session->set('semantic_html5', serialize($arrSession));
                 }
             }
@@ -277,20 +259,20 @@ class SemanticHTML5Helper extends Backend
 
     /**
      * Repair copied module specific content elements
-     * 
-     * @param integer $intId 
+     *
+     * @param integer $intId
      */
     protected function updateContentElem($intId)
     {
         // Support GlobalContentelements extension if installed
-		$where = array('',null);
-        if(in_array('GlobalContentelements', $this->Config->getActiveModules()))
+        $where = array('', null);
+        if (in_array('GlobalContentelements', $this->Config->getActiveModules()))
         {
             $where = array
-			(
-				' AND do=?',
-				$this->Input->get('do')
-			);
+                (
+                ' AND do=?',
+                $this->Input->get('do')
+            );
         }
 
         $objContents = $this->Database
@@ -317,7 +299,7 @@ class SemanticHTML5Helper extends Backend
                         if ($v['sh5_tag'] == 'end' && $v['sh5_pid'] == $arrContentElem['sh5_pid'])
                         {
                             $arrSets[$arrContentElem['id']] = array('sh5_pid' => $arrContentElem['id']);
-                            $arrSets[$v['id']] = array('sh5_pid' => $arrContentElem['id']);
+                            $arrSets[$v['id']]              = array('sh5_pid' => $arrContentElem['id']);
 
                             unset($arrResult[$k]);
                         }
@@ -331,7 +313,7 @@ class SemanticHTML5Helper extends Backend
                         if ($v['sh5_tag'] == 'start' && $v['sh5_pid'] == $arrContentElem['sh5_pid'] && $v['id'] != $v['sh5_pid'])
                         {
                             $arrSets[$arrContentElem['id']] = array('sh5_pid' => $v['id']);
-                            $arrSets[$v['id']] = array('sh5_pid' => $v['id']);
+                            $arrSets[$v['id']]              = array('sh5_pid' => $v['id']);
 
                             unset($arrResult[$k]);
                         }
@@ -349,11 +331,11 @@ class SemanticHTML5Helper extends Backend
                         ->execute($intId);
         }
     }
-    
+
     /**
      * Return sh5 type clipboard title
      * HOOK: $GLOBALS['TL_HOOKS']['clipboardContentTitle']
-     * 
+     *
      * @param ClipboardHelper $objClipboardHelper
      * @param string $strHeadline
      * @param DB_Mysql_Result $objContent
@@ -361,19 +343,19 @@ class SemanticHTML5Helper extends Backend
      * @return mixed
      */
     public function clipboardContentTitle(ClipboardHelper $objClipboardHelper, $strHeadline, DB_Mysql_Result $objContent, $booClGroup)
-    {        
-        if($objContent->type == 'semantic_html5')
-        {            
+    {
+        if ($objContent->type == 'semantic_html5')
+        {
             return ((!$booClGroup) ? ucfirst($objContent->sh5_tag) : '') . ' ' . strtoupper($objContent->sh5_type);
         }
-        
+
         return NULL;
     }
-    
+
     /**
-     * 
+     *
      * HOOK: $GLOBALS['TL_HOOKS']['clipboardCopy']
-     * 
+     *
      * @param integer $intId
      * @param datacontainer $dc
      * @param array $objDb
@@ -381,12 +363,12 @@ class SemanticHTML5Helper extends Backend
      */
     public function clipboardCopy($intId, datacontainer $dc, $isGrouped)
     {
-        if(!$isGrouped)
+        if (!$isGrouped)
         {
             $objActiveRecord = $this->Database
                     ->prepare("SELECT * FROM tl_content WHERE id = ?")
                     ->executeUncached($intId);
-            
+
             if ($objActiveRecord->type == 'semantic_html5')
             {
                 if ($objActiveRecord->sh5_tag == 'start')
@@ -409,16 +391,16 @@ class SemanticHTML5Helper extends Backend
             }
         }
     }
-    
+
     /**
-     * 
+     *
      * HOOK: $GLOBALS['TL_HOOKS']['clipboardCopyAll']
-     * 
+     *
      * @param array $arrIds
      */
     public function clipboardCopyAll($arrIds)
     {
-        foreach(array_keys(array_flip($arrIds)) as $intId)
+        foreach (array_keys(array_flip($arrIds)) as $intId)
         {
             $this->updateContentElem($intId);
         }

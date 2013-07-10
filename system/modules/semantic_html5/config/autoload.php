@@ -14,8 +14,8 @@
  */
 ClassLoader::addClasses(array
 (
-	'SemanticHTML5'       => 'system/modules/semantic_html5/SemanticHTML5.php',
-	'SemanticHTML5Helper' => 'system/modules/semantic_html5/SemanticHTML5Helper.php',
+    'SemanticHTML5'       => 'system/modules/semantic_html5/SemanticHTML5.php',
+    'SemanticHTML5Helper' => 'system/modules/semantic_html5/SemanticHTML5Helper.php',
 ));
 
 
@@ -24,5 +24,5 @@ ClassLoader::addClasses(array
  */
 TemplateLoader::addFiles(array
 (
-	'ce_semantic_html5' => 'system/modules/semantic_html5/templates',
+    'ce_semantic_html5' => 'system/modules/semantic_html5/templates',
 ));
