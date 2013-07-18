@@ -14,5 +14,6 @@
 CREATE TABLE `tl_content` (
   `sh5_pid` int(10) unsigned NOT NULL default '0',
   `sh5_type` varchar(64) NOT NULL default '',
-  `sh5_tag` varchar(32) NOT NULL default 'start'
+  `sh5_tag` varchar(32) NOT NULL default 'start',
+  `sh5_additional` blob NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

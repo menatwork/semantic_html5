@@ -19,7 +19,7 @@ $GLOBALS['TL_DCA']['tl_content']['list']['sorting']['child_record_callback'] = a
  */
 if (tl_content_sh5::checkForTag())
 {
-    $GLOBALS['TL_DCA']['tl_content']['palettes']['semantic_html5'] = '{type_legend},type,headline;{html5_legend},sh5_type;{protected_legend:hide},protected;{expert_legend:hide},guests,invisible,cssID,space';
+    $GLOBALS['TL_DCA']['tl_content']['palettes']['semantic_html5'] = '{type_legend},type,headline;{html5_legend},sh5_type,sh5_additional;{protected_legend:hide},protected;{expert_legend:hide},guests,invisible,cssID,space';
 }
 else
 {
@@ -47,6 +47,42 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['sh5_type'] = array
         'mandatory'          => true,
         'includeBlankOption' => true
     )
+);
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['sh5_additional'] = array
+(
+    'label'             => &$GLOBALS['TL_LANG']['tl_content']['sh5_additional'],
+    'exclude'           => true,
+    'inputType'         => 'multiColumnWizard',
+    'eval' => array
+    (
+        'tl_class'      => 'clr',
+        'columnFields' => array
+        (
+            'property' => array
+            (
+                'label'             => &$GLOBALS['TL_LANG']['tl_content']['sh5_additional']['property'],
+                'inputType'         => 'text',
+                'eval' => array
+                (
+                    'style'         => 'width:290px',
+                    'nospace'       => true,
+                    'rgxp'          => 'alnum'
+                )
+            ),
+            'value' => array
+            (
+                'label'             => &$GLOBALS['TL_LANG']['tl_content']['sh5_additional']['value'],
+                'inputType'         => 'text',
+                'eval' => array
+                (
+                    'style'         => 'width:290px',
+                    'nospace'       => true,
+                    'rgxp'          => 'alnum'
+                )
+            ),
+        ),
+    ),
 );
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['sh5_pid'] = array
