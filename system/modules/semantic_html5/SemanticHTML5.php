@@ -43,7 +43,7 @@ class SemanticHTML5 extends ContentElement
                 ->execute($this->id);
 
         $strAdditional = '';
-        if($this->sh5_tag == 'start')
+        if($this->sh5_tag == 'start' && $this->sh5_additional)
         {
             foreach(deserialize($this->sh5_additional) as $arrAdditional) {
                 if($arrAdditional['property'])
