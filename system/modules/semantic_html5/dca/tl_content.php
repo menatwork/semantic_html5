@@ -248,11 +248,6 @@ class tl_content_sh5 extends tl_content
         if (strlen($GLOBALS['TL_CONFIG']['sh5_customer_tags']))
         {
             $arrCustomerTags = trimsplit(',', $GLOBALS['TL_CONFIG']['sh5_customer_tags']);
-
-            foreach ($arrCustomerTags AS $k => $v)
-            {
-                $arrCustomerTags[$k] = $v;
-            }
         }
 
         return array_merge(array_keys($GLOBALS['TL_HTML5']), $arrCustomerTags);
