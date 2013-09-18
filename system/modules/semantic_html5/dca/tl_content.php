@@ -95,6 +95,19 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['sh5_tag'] = array
     'inputType'         => 'text'
 );
 
+if(class_exists('tl_content_parallaxIP') && tl_content_parallaxIP::isActive()) {
+    /**
+     * Parallax palette
+     */
+    foreach ($GLOBALS['TL_DCA']['tl_content']['palettes'] as $strKey => $arrRow)
+    {
+        if ($strKey == '__selector__') continue;
+        $arrPalettes = explode(";", $arrRow);
+        array_insert($arrPalettes, count($arrPalettes) - 2, array('{prx_image_picker_legend},prx_image_picker'));
+        $GLOBALS['TL_DCA']['tl_content']['palettes'][$strKey] = implode(";", $arrPalettes);
+    }
+}
+
 /**
  * Class tl_content_semantic_html5
  */
