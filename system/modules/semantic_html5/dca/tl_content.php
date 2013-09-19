@@ -95,7 +95,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['sh5_tag'] = array
     'inputType'         => 'text'
 );
 
-if(@class_exists('tl_content_parallaxIP') && tl_content_parallaxIP::isActive()) {
+if(in_array('parallaxImagePicker', Config::getInstance()->getActiveModules()) && tl_content_parallaxIP::isActive()) {
     /**
      * Parallax palette
      */
