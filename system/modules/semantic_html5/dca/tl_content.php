@@ -101,7 +101,7 @@ if(in_array('parallaxImagePicker', Config::getInstance()->getActiveModules()) &&
      */
     foreach ($GLOBALS['TL_DCA']['tl_content']['palettes'] as $strKey => $arrRow)
     {
-        if ($strKey == '__selector__') continue;
+        if ($strKey == '__selector__' || $strKey != 'semantic_html5') continue;
         $arrPalettes = explode(";", $arrRow);
         array_insert($arrPalettes, count($arrPalettes) - 2, array('{prx_image_picker_legend},prx_image_picker'));
         $GLOBALS['TL_DCA']['tl_content']['palettes'][$strKey] = implode(";", $arrPalettes);
