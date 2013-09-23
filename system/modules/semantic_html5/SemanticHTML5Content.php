@@ -103,6 +103,12 @@ class SemanticHTML5Content extends tl_content
 
                 $strReturn .= $callbackObject->$callbackMethod($arrRow);
 
+                if ($arrRow['type'] == 'semantic_html5')
+                {
+                    $strReturn = str_replace('limit_height', '', $strReturn);
+                    $strReturn = str_replace('h64', '', $strReturn);
+                }
+
                 for ($i = 0; $i < $intLevel; $i++)
                 {
                     $strReturn .= '</div>';
@@ -124,6 +130,12 @@ class SemanticHTML5Content extends tl_content
 
                 $strReturn .= $callbackObject->$callbackMethod($arrRow);
 
+                if ($arrRow['type'] == 'semantic_html5')
+                {
+                    $strReturn = str_replace('limit_height', '', $strReturn);
+                    $strReturn = str_replace('h64', '', $strReturn);
+                }
+
                 for ($i = 0; $i < $intLevel + 1; $i++)
                 {
                     $strReturn .= '</div>';
@@ -133,6 +145,12 @@ class SemanticHTML5Content extends tl_content
         else
         {
             $strReturn = $callbackObject->$callbackMethod($arrRow);
+
+            if ($arrRow['type'] == 'semantic_html5')
+            {
+                $strReturn = str_replace('limit_height', '', $strReturn);
+                $strReturn = str_replace('h64', '', $strReturn);
+            }
         }
 
         return $strReturn;
