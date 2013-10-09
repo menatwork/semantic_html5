@@ -48,7 +48,7 @@ class SemanticHTML5 extends ContentElement
             foreach(deserialize($this->sh5_additional) as $arrAdditional) {
                 if($arrAdditional['property'])
                 {
-                    $strAdditional .= ' ' . $arrAdditional['property'] . '="' . $arrAdditional['value'] . '"';
+                    $strAdditional .= ' ' . $arrAdditional['property'] . '="' . specialchars($arrAdditional['value']) . '"';
                 }
             }
         }
