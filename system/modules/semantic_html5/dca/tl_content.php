@@ -78,7 +78,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['sh5_additional'] = array
                 (
                     'style'         => 'width:290px',
                     'nospace'       => true,
-                    'rgxp'          => 'alnum'
                 )
             ),
         ),
