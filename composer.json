@@ -1,0 +1,50 @@
+{
+	"name":"menatwork/semantic_html5",
+	"description":"Create html5 elements as content element",
+	"keywords":["html5","semantic","contentelements","wrapper"],
+	"type":"contao-module",
+	"homepage":"http://www.men-at-work.de",
+	"license":"LGPL-3.0+",
+	"authors":[
+		{
+			"name":"Andreas Isaak",
+			"email":"contao@men-at-work.de",
+			"homepage":"http://www.men-at-work.de",
+			"role":"Developer"
+		},
+		{
+			"name":"Patrick Kahl",
+			"email":"contao@men-at-work.de",
+			"homepage":"http://www.men-at-work.de",
+			"role":"Developer"
+		}
+	],
+	"support":{
+		"email":"contao@men-at-work.de",
+		"issues":"https://github.com/menatwork/semantic_html5/issues",
+		"irc":"irc://irc.freenode.org/contao.dev",
+		"source":"https://github.com/menatwork/semantic_html5"
+	},
+	"require":{
+		"php":">=5.3",
+		"contao/core":">=2.11,<4",
+		"contao-community-alliance/composer-installer":"*",
+		"menatwork/contao-multicolumnwizard":"3.2.*"
+	},
+	"autoload":{
+		"classmap":["system/"]
+	},
+	"replace":{
+		"contao-legacy/semantic_html5":"*"
+	},
+	"extra":{
+		"contao":{
+			"sources":{
+				"system/modules/semantic_html5":"system/modules/semantic_html5"
+			},
+			"runonce":[
+				"system/modules/semantic_html5/config/runonce.php"
+			]
+		}
+	}
+}
