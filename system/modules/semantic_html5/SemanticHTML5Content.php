@@ -80,11 +80,11 @@ class SemanticHTML5Content extends tl_content
                 {
                     if ($i == 0)
                     {
-                        $strReturn .= '<div class="sh5-tag sh5-level-' . $i . '">';
+                        $strReturn .= '<div>';
                     }
                     else
                     {
-                        $strReturn .= '<div class="sh5-tag sh5-level-' . $i . '" style="margin-left:20px;">';
+                        $strReturn .= '<div>';
                     }
                 }
 
@@ -101,11 +101,11 @@ class SemanticHTML5Content extends tl_content
                 {
                     if ($i == 0)
                     {
-                        $strReturn .= '<div class="sh5-content sh5-level-' . $i . '">';
+                        $strReturn .= '<div>';
                     }
                     else
                     {
-                        $strReturn .= '<div class="sh5-content sh5-level-' . $i . '" style="margin-left:20px;">';
+                        $strReturn .= '<div>';
                     }
                 }
 
