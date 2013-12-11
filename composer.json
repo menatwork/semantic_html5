@@ -41,10 +41,7 @@
 		"contao":{
 			"sources":{
 				"system/modules/semantic_html5":"system/modules/semantic_html5"
-			},
-			"runonce":[
-				"system/modules/semantic_html5/config/runonce.php"
-			]
+			}
 		}
 	}
 }
