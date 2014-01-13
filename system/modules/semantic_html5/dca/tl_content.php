@@ -12,7 +12,7 @@
 /**
  * Table tl_content
  */
-$GLOBALS['TL_DCA']['tl_content']['list']['sorting']['child_record_callback'] = array('SemanticHTML5Content', 'addCteType');
+SemanticHTML5Content::initDataContainer();
 
 /**
  * Palettes

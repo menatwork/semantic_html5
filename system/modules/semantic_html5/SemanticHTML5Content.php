@@ -14,6 +14,13 @@
  */
 class SemanticHTML5Content extends tl_content
 {
+    static protected $defaultAddCteTypeCallback = array('tl_content', 'addCteType');
+
+    static public function initDataContainer()
+    {
+        static::$defaultAddCteTypeCallback = $GLOBALS['TL_DCA']['tl_content']['list']['sorting']['child_record_callback'];
+        $GLOBALS['TL_DCA']['tl_content']['list']['sorting']['child_record_callback'] = array('SemanticHTML5Content', 'addCteType');
+    }
 
     protected static $arrContentElements = null;
 
@@ -24,6 +31,12 @@ class SemanticHTML5Content extends tl_content
      */
     public function addCteType($arrRow)
     {
+        $callback = static::$defaultAddCteTypeCallback;
+        $callbackObject = in_array('getInstance', get_class_methods($callback[0]))
+            ? $callback[0]::getInstance()
+            : new $callback[0]();
+        $callbackMethod = static::$defaultAddCteTypeCallback[1];
+
         // Build level for all elements
         if (self::$arrContentElements == null)
         {
@@ -88,7 +101,13 @@ class SemanticHTML5Content extends tl_content
                     }
                 }
 
-                $strReturn .= parent::addCteType($arrRow);
+                $strReturn .= $callbackObject->$callbackMethod($arrRow);
+
+                if ($arrRow['type'] == 'semantic_html5')
+                {
+                    $strReturn = str_replace('limit_height', '', $strReturn);
+                    $strReturn = str_replace('h64', '', $strReturn);
+                }
 
                 for ($i = 0; $i < $intLevel; $i++)
                 {
@@ -109,7 +128,13 @@ class SemanticHTML5Content extends tl_content
                     }
                 }
 
-                $strReturn .= parent::addCteType($arrRow);
+                $strReturn .= $callbackObject->$callbackMethod($arrRow);
+
+                if ($arrRow['type'] == 'semantic_html5')
+                {
+                    $strReturn = str_replace('limit_height', '', $strReturn);
+                    $strReturn = str_replace('h64', '', $strReturn);
+                }
 
                 for ($i = 0; $i < $intLevel + 1; $i++)
                 {
@@ -119,7 +144,13 @@ class SemanticHTML5Content extends tl_content
         }
         else
         {
-            $strReturn = parent::addCteType($arrRow);
+            $strReturn = $callbackObject->$callbackMethod($arrRow);
+
+            if ($arrRow['type'] == 'semantic_html5')
+            {
+                $strReturn = str_replace('limit_height', '', $strReturn);
+                $strReturn = str_replace('h64', '', $strReturn);
+            }
         }
 
         return $strReturn;
