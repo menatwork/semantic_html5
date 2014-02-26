@@ -12,7 +12,7 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] = str_replace('{security_legend:hide}', '{security_legend:hide},sh5_customer_tags', $GLOBALS['TL_DCA']['tl_settings']['palettes']['default']);
+$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] = str_replace(',allowedTags', ',sh5_customer_tags,allowedTags', $GLOBALS['TL_DCA']['tl_settings']['palettes']['default']);
 
 /**
  * Fields
