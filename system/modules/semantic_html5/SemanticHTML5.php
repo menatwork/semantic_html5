@@ -64,7 +64,12 @@ class SemanticHTML5 extends ContentElement
                 $this->sh5_additional
             ));
 
-            return $objTemplate->parse();
+            return $objTemplate->parse() . (($this->sh5_tag == 'end' && version_compare(VERSION, 3, '>=')) ? '<script>
+                if(document.getElementById("li_' . $this->id . '")) {
+                    var elem = document.getElementById("li_' . $this->id . '").firstElementChild;
+                    elem.className = elem.className.replace("wrapper_start", "wrapper_stop");
+                }
+            </script>' : '');
         }
 
         return parent::generate();
