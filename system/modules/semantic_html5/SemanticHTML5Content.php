@@ -236,7 +236,7 @@ class SemanticHTML5Content extends tl_content
                 // Update endTag with sh5_type
                 $this->Database
                         ->prepare("UPDATE tl_content %s WHERE sh5_pid = ?")
-                        ->set(array('sh5_type' => $objElement->sh5_type))
+                        ->set(array('sh5_type' => $objElement->sh5_type, 'sh5_additional' => $objElement->sh5_additional))
                         ->executeUncached($objElement->id);
             }
         }
