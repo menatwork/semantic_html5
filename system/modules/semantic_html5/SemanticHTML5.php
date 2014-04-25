@@ -64,12 +64,26 @@ class SemanticHTML5 extends ContentElement
                 $this->sh5_additional
             ));
 
-            return $objTemplate->parse() . (($this->sh5_tag == 'end' && version_compare(VERSION, 3, '>=')) ? '<script>
+            $strReturn = $objTemplate->parse();
+
+            // Add script to toggle wrong wrapper class in backend
+            $strReturn .= (($this->sh5_tag == 'end' && version_compare(VERSION, 3, '>=')) ? '<script>
                 if(document.getElementById("li_' . $this->id . '")) {
                     var elem = document.getElementById("li_' . $this->id . '").firstElementChild;
                     elem.className = elem.className.replace("wrapper_start", "wrapper_stop");
                 }
             </script>' : '');
+
+            // Add script to remove all indent classes as quick workaround
+            $strReturn .= ((version_compare(VERSION, 3, '>=')) ? '<script>
+                var el = document.getElementById("li_' . $this->id . '");
+                if(el) {
+                    var elem = el.firstElementChild;
+                    elem.className = elem.className.replace(" indent ", "");
+                }
+            </script>' : '');
+
+            return $strReturn;
         }
 
         return parent::generate();
