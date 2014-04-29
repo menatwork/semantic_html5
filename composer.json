@@ -41,6 +41,12 @@
 		"contao":{
 			"sources":{
 				"system/modules/semantic_html5":"system/modules/semantic_html5"
+			},
+			"transifex": {
+				"project": "semantic_html5",
+				"prefix": "",
+				"languages_cto": "system/modules/semantic_html5/languages",
+				"languages_tx": ".tx"
 			}
 		}
 	}
