@@ -9,7 +9,6 @@
  * @filesource
  */
 
-/**
- * Fields
- */
-$GLOBALS['TL_LANG']['tl_settings']['sh5_customer_tags'] = array('HTML5-Elemente', 'Hier können Sie die Liste der HTMl5-Elemente für die Extension semantic_html5 um eigene Elemente erweitern.');
+$GLOBALS['TL_LANG']['tl_settings']['sh5_customer_tags']['0'] = 'HTML5-Elemente';
+$GLOBALS['TL_LANG']['tl_settings']['sh5_customer_tags']['1'] = 'Hier können Sie die Liste der HTML5-Elemente für die Extension semantic_html5 um eigene Elemente erweitern.';
+
