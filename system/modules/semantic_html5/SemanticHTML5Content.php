@@ -368,14 +368,9 @@ class SemanticHTML5Content extends tl_content
 <script>
 (function(){
     var element = document.getElementById('cte_%s');
-    var element = element.parentNode;
+    element = element.parentNode;
     while (element) {
         var classes = element.getAttribute('class');
-        if (classes) {
-        console.log(element);
-        console.log(classes);
-        console.log(classes.indexOf('tl_content'));
-        }
         if (classes && -1 != classes.indexOf('tl_content')) {
             element.setAttribute(
                 'style',
