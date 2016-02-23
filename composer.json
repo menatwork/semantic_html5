@@ -24,6 +24,9 @@
 		"contao-community-alliance/composer-installer":"*",
 		"menatwork/contao-multicolumnwizard":"~3.2"
 	},
+        "require-dev":{
+            "phpcq/phpcq": "~1.0"
+        },
 	"autoload": {
 	    "psr-4": {
 	      "SemanticHTML5\\": "src/"

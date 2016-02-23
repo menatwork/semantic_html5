@@ -12,14 +12,14 @@
 
 namespace SemanticHTML5\Elements;
 
-class Start extends \ContentElement
+class End extends \ContentElement
 {
 
     /**
      * Template
      * @var string
      */
-    protected $strTemplate = 'ce_semantic_html5_start';
+    protected $strTemplate = 'ce_semantic_html5_end';
 
     /**
      * Generate the content element
@@ -31,4 +31,5 @@ class Start extends \ContentElement
             $this->Template = new \BackendTemplate($this->strTemplate);
         }
     }
+
 }
