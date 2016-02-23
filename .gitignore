@@ -1,0 +1,21 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs 
+.buildpath
+.project
+.settings/
+.build/
+.external*/
+.idea/
+nbproject/
+
+# composer related
+vendor/
+
+# build
+build/
+
+# custom
+runonceDebug.php
