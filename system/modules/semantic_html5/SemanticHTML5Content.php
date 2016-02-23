@@ -22,6 +22,10 @@ class SemanticHTML5Content extends tl_content
         $GLOBALS['TL_DCA']['tl_content']['list']['sorting']['child_record_callback'] = array('SemanticHTML5Content', 'addCteType');
     }
 
+    private static $rotatingColor = .2;
+
+    private static $elementColors = [];
+
     protected static $arrContentElements = null;
 
     /**
@@ -105,6 +109,7 @@ class SemanticHTML5Content extends tl_content
 
                 if ($arrRow['type'] == 'semantic_html5')
                 {
+                    $strReturn = $this->colorize($strReturn, $arrRow);
                     $strReturn = str_replace('limit_height', '', $strReturn);
                     $strReturn = str_replace('h64', '', $strReturn);
                 }
@@ -132,6 +137,7 @@ class SemanticHTML5Content extends tl_content
 
                 if ($arrRow['type'] == 'semantic_html5')
                 {
+                    $strReturn = $this->colorize($strReturn, $arrRow);
                     $strReturn = str_replace('limit_height', '', $strReturn);
                     $strReturn = str_replace('h64', '', $strReturn);
                 }
@@ -148,6 +154,7 @@ class SemanticHTML5Content extends tl_content
 
             if ($arrRow['type'] == 'semantic_html5')
             {
+                $strReturn = $this->colorize($strReturn, $arrRow);
                 $strReturn = str_replace('limit_height', '', $strReturn);
                 $strReturn = str_replace('h64', '', $strReturn);
             }
@@ -345,6 +352,108 @@ class SemanticHTML5Content extends tl_content
                 ->execute($this->User->id, time(), $strTable, $strPrefix . $strSourceSQL, count($arrSave[$strTable]), serialize($arrSave));
     }
 
+    private function colorize($strReturn, $arrRow)
+    {
+        if ('end' === $arrRow['sh5_tag']) {
+            $pid   = $arrRow['sh5_pid'];
+            $color = static::$elementColors[$pid];
+        } else {
+            $id    = $arrRow['id'];
+            $color = $this->rotateColor();
+
+            static::$elementColors[$id] = $color;
+        }
+
+        $script = <<<'SCRIPT'
+<script>
+(function(){
+    var element = document.getElementById('cte_%s');
+    element = element.parentNode;
+    while (element) {
+        var classes = element.getAttribute('class');
+        if (classes && -1 != classes.indexOf('tl_content')) {
+            element.setAttribute(
+                'style',
+                'border-left: 3px solid %s; padding-left: 3px;'
+            );
+            return;
+        }
+        element = element.parentNode;
+    }
+})();
+</script>
+SCRIPT;
+
+        $strReturn = str_replace(
+            'class="cte_type',
+            sprintf('id="cte_%s" class="cte_type', $arrRow['id']),
+            $strReturn
+        );
+        $strReturn .= sprintf(
+            $script,
+            $arrRow['id'],
+            $color
+        );
+
+        return $strReturn;
+    }
+
+    private function currentColor()
+    {
+        return $this->HSVtoRGB(static::$rotatingColor, 1, .8);
+    }
+
+    private function rotateColor()
+    {
+        $color = $this->currentColor();
+
+        static::$rotatingColor += .7;
+
+        if (static::$rotatingColor > 1) {
+            static::$rotatingColor -= 1;
+        }
+
+        return $color;
+    }
+
+    /**
+     * @see http://stackoverflow.com/a/3597447
+     */
+    private function HSVtoRGB($hue, $saturation, $value)
+    {
+        //1
+        $hue *= 6;
+        //2
+        $I = floor($hue);
+        $F = $hue - $I;
+        //3
+        $M = $value * (1 - $saturation);
+        $N = $value * (1 - $saturation * $F);
+        $K = $value * (1 - $saturation * (1 - $F));
+        //4
+        switch ($I) {
+            case 0:
+                list($red, $green, $blue) = array($value, $K, $M);
+                break;
+            case 1:
+                list($red, $green, $blue) = array($N, $value, $M);
+                break;
+            case 2:
+                list($red, $green, $blue) = array($M, $value, $K);
+                break;
+            case 3:
+                list($red, $green, $blue) = array($M, $N, $value);
+                break;
+            case 4:
+                list($red, $green, $blue) = array($K, $M, $value);
+                break;
+            case 5:
+            case 6: //for when $H=1 is given
+                list($red, $green, $blue) = array($value, $M, $N);
+                break;
+        }
+        return sprintf('#%02x%02x%02x', $red * 255, $green * 255, $blue * 255);
+    }
 }
 
 ?>
