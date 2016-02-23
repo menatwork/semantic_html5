@@ -2,23 +2,13 @@
 
 /**
  * Contao Open Source CMS
+ * Copyright (c) 2005-2015 Leo Feyer
  *
- * @copyright  MEN AT WORK 2013
  * @package    semantic_html5
- * @license    GNU/LGPL
- * @filesource
+ * @copyright  MEN AT WORK 2016
+ * @author     David Maack <david.maack@arcor.de>
+ * @license    LGPL-3.0+
  */
-
-/**
- * Register the classes
- */
-ClassLoader::addClasses(array
-(
-    'SemanticHTML5'       => 'system/modules/semantic_html5/SemanticHTML5.php',
-    'SemanticHTML5Content' => 'system/modules/semantic_html5/SemanticHTML5Content.php',
-    'SemanticHTML5Helper' => 'system/modules/semantic_html5/SemanticHTML5Helper.php',
-    'SemanticHTML5Settings' => 'system/modules/semantic_html5/SemanticHTML5Settings.php',
-));
 
 
 /**
@@ -26,5 +16,6 @@ ClassLoader::addClasses(array
  */
 TemplateLoader::addFiles(array
 (
-    'ce_semantic_html5' => 'system/modules/semantic_html5/templates',
+    'ce_semantic_html5_end'   => 'system/modules/semantic_html5/templates',
+    'ce_semantic_html5_start' => 'system/modules/semantic_html5/templates',
 ));

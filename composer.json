@@ -24,9 +24,11 @@
 		"contao-community-alliance/composer-installer":"*",
 		"menatwork/contao-multicolumnwizard":"~3.2"
 	},
-	"autoload":{
-		"classmap":["system/"]
-	},
+	"autoload": {
+	    "psr-4": {
+	      "SemanticHTML5\\": "src/"
+	    }
+	  },
 	"replace":{
 		"contao-legacy/semantic_html5":"*"
 	},
