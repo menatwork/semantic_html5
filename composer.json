@@ -33,7 +33,7 @@
 	"extra":{
 		"contao":{
 			"sources":{
-				"system/modules/semantic_html5":"system/modules/semantic_html5"
+				"contao":"system/modules/semantic_html5"
 			}
 		}
 	}
