@@ -61,8 +61,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['sh5_additional'] = array
                 'inputType'         => 'text',
                 'eval' => array
                 (
-                    'style'         => 'width:290px',
-                    'nospace'       => true,
+                    'style'         => 'width:290px'
                 )
             ),
         ),
