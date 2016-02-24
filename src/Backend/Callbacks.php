@@ -17,9 +17,49 @@ namespace SemanticHTML5\Backend;
  */
 class Callbacks
 {
-    private static $rotatingColor = .2;
+    /**
+     * Object instance (Singleton)
+     */
+    protected static $objInstance;
 
+    /**
+     * Array element colors
+     */
     private static $elementColors = [];
+
+    /**
+     * Prevent direct instantiation (Singleton)
+     */
+    protected function __construct() {}
+
+    /**
+     * Prevent cloning of the object (Singleton)
+     */
+    final public function __clone() {}
+
+    /**
+     * Return the object instance (Singleton)
+     */
+    public static function getInstance()
+    {
+        if (static::$objInstance === null) {
+            static::$objInstance = new static();
+        }
+        return static::$objInstance;
+    }
+
+    /**
+     * Adds or updates the corresponding star or end tag
+     * @param \DataContainer $dc
+     */
+    public static function onsubmitCallback(\DataContainer $dc)
+    {
+        if ($dc->activeRecord->type == 'sHtml5Start') {
+            Helper::createOrUpdateEndTag($dc->activeRecord->row(), $dc->table);
+        } else if($dc->activeRecord->type == 'sHtml5Start') {
+            Helper::createOrUpdateStartTag($dc);
+        }
+    }
 
     /**
      * Callback function to add the JS for colorization the the markup
@@ -38,7 +78,7 @@ class Callbacks
             if ($objRow->type == 'sHtml5End') {
                 $color = static::$elementColors[$objRow->sh5_pid];
             } else {
-                $color = self::rotateColor();
+                $color = Helper::rotateColor();
                 static::$elementColors[$objRow->id] = $color;
             }
 
@@ -50,63 +90,4 @@ class Callbacks
         }
         return ($strBuffer);
     }
-    
-
-
-    /**
-     * Rotate the color and return a new color
-     * @return String the hex string of the new color
-     */
-    private static function rotateColor()
-    {
-        $color = self::HSVtoRGB(static::$rotatingColor, 1, .8);
-
-        static::$rotatingColor += .7;
-
-        if (static::$rotatingColor > 1) {
-            static::$rotatingColor -= 1;
-        }
-
-        return $color;
-    }
-
-    /**
-     * @see http://stackoverflow.com/a/3597447
-     */
-    private static function HSVtoRGB($hue, $saturation, $value)
-    {
-        //1
-        $hue *= 6;
-        //2
-        $I = floor($hue);
-        $F = $hue - $I;
-        //3
-        $M = $value * (1 - $saturation);
-        $N = $value * (1 - $saturation * $F);
-        $K = $value * (1 - $saturation * (1 - $F));
-        //4
-        switch ($I) {
-            case 0:
-                list($red, $green, $blue) = array($value, $K, $M);
-                break;
-            case 1:
-                list($red, $green, $blue) = array($N, $value, $M);
-                break;
-            case 2:
-                list($red, $green, $blue) = array($M, $value, $K);
-                break;
-            case 3:
-                list($red, $green, $blue) = array($M, $N, $value);
-                break;
-            case 4:
-                list($red, $green, $blue) = array($K, $M, $value);
-                break;
-            case 5:
-            case 6: //for when $H=1 is given
-                list($red, $green, $blue) = array($value, $M, $N);
-                break;
-        }
-        return sprintf('#%02x%02x%02x', $red * 255, $green * 255, $blue * 255);
-    }
-
 }

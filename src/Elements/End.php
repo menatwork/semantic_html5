@@ -29,7 +29,7 @@ class End extends \ContentElement
         //render BE-Template
         if (TL_MODE == 'BE') {
             $this->Template = new \BackendTemplate('be_wildcard');
-            $this->Template->wildcard = "&lt;" . $this->sh5_type . "&gt;";
+            $this->Template->wildcard = "&lt;/" . $this->sh5_type . "&gt;";
             return $this->Template->parse();
         }
     }

@@ -17,6 +17,11 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['sHtml5Start'] = '{type_legend},typ
 
 
 /**
+ * Callbacks
+ */
+$GLOBALS['TL_DCA']['tl_content']['config']['onsubmit_callback'][] = array('SemanticHTML5\Backend\Callbacks', 'onsubmitCallback');
+
+/**
  * Fields
  */
 $GLOBALS['TL_DCA']['tl_content']['fields']['sh5_type'] = array
