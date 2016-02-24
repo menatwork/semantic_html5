@@ -26,9 +26,35 @@ class Start extends \ContentElement
      */
     protected function compile()
     {
+        //parse all extra attributes
+        $attributes = '';
+        if ($this->sh5_additional) {
+            foreach (deserialize($this->sh5_additional) as $additional) {
+                switch($additional['property']) {
+                    case 'class':
+                            if (!empty($additional['value'])){
+                                $this->cssID =  array($this->cssID[0], $this->cssID[1] . ' ' . $additional['value']);
+                            }
+                                
+                        break;
+                    default:
+                        $attributes .= ' ' . $additional['property'] . ((!empty($additional['value'])) ? '="' . specialchars($additional['value']) . '"' : '');
+                }
+            }
+        }
+        $this->Template->sh5_additional = $attributes;
+
+        //render BE-Template
         if (TL_MODE == 'BE') {
-            $this->strTemplate = 'be_wildcard';
-            $this->Template = new \BackendTemplate($this->strTemplate);
+            $this->Template = new \BackendTemplate('be_wildcard');
+            $this->Template->wildcard = sprintf("&lt;%s%s%s%s&gt;",
+                    $this->sh5_type,
+                    ($this->cssID[0]) ? ' id="' . $this->cssID[0] .'"': '',
+                    ' class="' . trim('ce_' . $this->type . ' ' . $this->cssID[1]) .'"',
+                    $attributes
+            );
+
+            return $this->Template->parse();
         }
     }
 }
