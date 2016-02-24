@@ -54,10 +54,21 @@ class Callbacks
      */
     public static function onsubmitCallback(\DataContainer $dc)
     {
-        if ($dc->activeRecord->type == 'sHtml5Start') {
-            Helper::createOrUpdateEndTag($dc->activeRecord->row(), $dc->table);
-        } else if($dc->activeRecord->type == 'sHtml5Start') {
-            Helper::createOrUpdateStartTag($dc);
+        //if this is not a html5 element, do nothing
+        if (in_array($dc->activeRecord->type, array('sHtml5Start', 'sHtml5End'))) {
+
+            //correct the sh5_pid if needed
+             if ($dc->activeRecord->type == 'sHtml5Start' && 
+                 $dc->activeRecord->id != $dc->activeRecord->sh5_pid) {
+                 \Database::getInstance()
+                    ->prepare('UPDATE ' . $dc->table . ' %s WHERE id = ?')
+                    ->set(array('sh5_pid' => $dc->activeRecord->id))
+                    ->execute($dc->activeRecord->id);
+             }
+
+            //crea or update the corresponding html5 tag
+            $util = new TagUtils($dc->table);
+            $util->createOrupdateCorresppondingTag($dc->activeRecord);
         }
     }
 
