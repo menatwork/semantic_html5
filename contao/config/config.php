@@ -17,6 +17,11 @@ $GLOBALS['TL_CTE']['html5']['sHtml5Start'] = 'SemanticHTML5\Elements\Start';
 $GLOBALS['TL_CTE']['html5']['sHtml5End'] = 'SemanticHTML5\Elements\End';
 
 /**
+ * Hooks
+ */
+$GLOBALS['TL_HOOKS']['getContentElement'][] = array('SemanticHTML5\Backend\Callbacks', 'addColorizeJs');
+
+/**
  * Wrapper
  */
 $GLOBALS['TL_WRAPPERS']['start'][] = 'sHtml5Start';
