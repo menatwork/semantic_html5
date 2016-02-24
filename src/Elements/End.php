@@ -26,9 +26,11 @@ class End extends \ContentElement
      */
     protected function compile()
     {
+        //render BE-Template
         if (TL_MODE == 'BE') {
-            $this->strTemplate = 'be_wildcard';
-            $this->Template = new \BackendTemplate($this->strTemplate);
+            $this->Template = new \BackendTemplate('be_wildcard');
+            $this->Template->wildcard = "&lt;" . $this->sh5_type . "&gt;";
+            return $this->Template->parse();
         }
     }
 
