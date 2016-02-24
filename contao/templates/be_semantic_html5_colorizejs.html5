@@ -1,0 +1,22 @@
+<script>
+(function(){
+    var element = document.getElementById('li_<?= $this->id ?>').firstElementChild;
+    var children = element.children;
+    var style = element.currentStyle || window.getComputedStyle(element);
+    var pLeft = parseFloat(style.paddingLeft, 10);
+    var newNode = document.createElement("DIV");
+
+    newNode.setAttribute(
+        'style',
+        'border-left: 3px solid <?= $this->color; ?>;\n\
+        padding-left: ' + (pLeft - 3) + 'px;'
+    );
+
+    //move all child noes to the new div
+    while (children.length) {
+        newNode.appendChild(children[0]);
+    }
+    //append the new div
+    element.appendChild(newNode);
+})();
+</script>
