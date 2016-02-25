@@ -76,6 +76,19 @@ class TagUtils
         }
     }
 
+    public function ondeleteCallback(Result $item)
+    {
+        $cTags = $this->getcorrespondingTag($item);
+        
+        //of no tags were found, nothing else to do
+        if ($cTags == null) return;
+
+        //delete all tags
+        while ($cTags->next()){
+            $this->deleteTag($cTags->id);
+        }
+    }
+
     /**
      * Return the matching thml start or end tag
      * @param Result $item the Database-Result from the given item

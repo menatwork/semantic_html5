@@ -72,6 +72,12 @@ class Callbacks
         }
     }
 
+    public static function ondeleteCallback(\DataContainer $dc, $id)
+    {
+        $util = new TagUtils($dc->table);
+        $util->deleteCorrespondingTag($dc->activeRecord);
+    }
+
     /**
      * Callback function to add the JS for colorization the the markup
      * 
