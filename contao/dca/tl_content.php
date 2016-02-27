@@ -25,13 +25,11 @@ $GLOBALS['TL_DCA']['tl_content']['config']['ondelete_callback'][] = array('Seman
 /**
  * Fields
  */
-$GLOBALS['TL_DCA']['tl_content']['fields']['sh5_type'] = array
-(
+$GLOBALS['TL_DCA']['tl_content']['fields']['sh5_type'] = array(
     'label'             => &$GLOBALS['TL_LANG']['tl_content']['sh5_type'],
     'inputType'         => 'select',
     'options'           => array('div', 'section'),
-    'eval'              => array
-    (
+    'eval'              => array(
         'submitOnChange'     => true,
         'mandatory'          => true,
         'includeBlankOption' => true
@@ -39,34 +37,27 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['sh5_type'] = array
     'sql'               => "varchar(64) NOT NULL default ''"
 );
 
-$GLOBALS['TL_DCA']['tl_content']['fields']['sh5_additional'] = array
-(
+$GLOBALS['TL_DCA']['tl_content']['fields']['sh5_additional'] = array(
     'label'             => &$GLOBALS['TL_LANG']['tl_content']['sh5_additional'],
     'exclude'           => true,
     'inputType'         => 'multiColumnWizard',
     'sql'               => "blob NULL",
-    'eval' => array
-    (
+    'eval' => array(
         'tl_class'      => 'clr',
-        'columnFields' => array
-        (
-            'property' => array
-            (
+        'columnFields' => array(
+            'property' => array(
                 'label'             => &$GLOBALS['TL_LANG']['tl_content']['sh5_additional']['property'],
                 'inputType'         => 'text',
-                'eval' => array
-                (
+                'eval' => array(
                     'style'         => 'width:290px',
                     'nospace'       => true,
                     'rgxp'          => 'alnum'
                 )
             ),
-            'value' => array
-            (
+            'value' => array(
                 'label'             => &$GLOBALS['TL_LANG']['tl_content']['sh5_additional']['value'],
                 'inputType'         => 'text',
-                'eval' => array
-                (
+                'eval' => array(
                     'style'         => 'width:290px'
                 )
             ),
@@ -74,8 +65,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['sh5_additional'] = array
     ),
 );
 
-$GLOBALS['TL_DCA']['tl_content']['fields']['sh5_pid'] = array
-(
+$GLOBALS['TL_DCA']['tl_content']['fields']['sh5_pid'] = array(
     'inputType'         => 'text',
     'sql'               => "int(10) unsigned NOT NULL default '0'"
 );

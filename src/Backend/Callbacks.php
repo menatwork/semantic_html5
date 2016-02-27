@@ -58,13 +58,13 @@ class Callbacks
         if (in_array($dc->activeRecord->type, array('sHtml5Start', 'sHtml5End'))) {
 
             //correct the sh5_pid if needed
-             if ($dc->activeRecord->type == 'sHtml5Start' && 
+                if ($dc->activeRecord->type == 'sHtml5Start' && 
                  $dc->activeRecord->id != $dc->activeRecord->sh5_pid) {
-                 \Database::getInstance()
+                    \Database::getInstance()
                     ->prepare('UPDATE ' . $dc->table . ' %s WHERE id = ?')
                     ->set(array('sh5_pid' => $dc->activeRecord->id))
                     ->execute($dc->activeRecord->id);
-             }
+                }
 
             //crea or update the corresponding html5 tag
             $util = new TagUtils($dc->table);
