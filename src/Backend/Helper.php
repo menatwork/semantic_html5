@@ -26,12 +26,12 @@ class Helper
      */
     public static function rotateColor()
     {
-        $color = self::HSVtoRGB(static::$rotatingColor, 1, .8);
+        $color = self::HSVtoRGB(self::$rotatingColor, 1, .8);
 
         static::$rotatingColor += .7;
 
-        if (static::$rotatingColor > 1) {
-            static::$rotatingColor -= 1;
+        if (self::$rotatingColor > 1) {
+            self::$rotatingColor -= 1;
         }
 
         return $color;

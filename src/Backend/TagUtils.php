@@ -76,7 +76,7 @@ class TagUtils
         }
     }
 
-    public function ondeleteCallback(Result $item)
+    public function deleteCorrespondingTag(Result $item)
     {
         $cTags = $this->getcorrespondingTag($item);
         

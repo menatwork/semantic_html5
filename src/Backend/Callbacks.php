@@ -102,10 +102,10 @@ class Callbacks
         if (TL_MODE == 'BE' && ($objRow->type == 'sHtml5Start' || $objRow->type == 'sHtml5End')) {
             //get the color of the parent start-tag or rotate the color
             if ($objRow->type == 'sHtml5End') {
-                $color = static::$elementColors[$objRow->sh5_pid];
+                $color = self::$elementColors[$objRow->sh5_pid];
             } else {
                 $color = Helper::rotateColor();
-                static::$elementColors[$objRow->id] = $color;
+                self::$elementColors[$objRow->id] = $color;
             }
 
             $template = new \BackendTemplate('be_semantic_html5_colorizejs');
