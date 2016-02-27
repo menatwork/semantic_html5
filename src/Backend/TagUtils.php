@@ -33,6 +33,9 @@ class TagUtils
         'sHtml5Start'   => 'sHtml5End'
     );
 
+    /**
+     * @param string $table
+     */
     public function __construct($table) {
         $this->table = $table;
     }
@@ -84,7 +87,7 @@ class TagUtils
         if ($cTags == null) return;
 
         //delete all tags
-        while ($cTags->next()){
+        while ($cTags->next()) {
             $this->deleteTag($cTags->id);
         }
     }
@@ -111,15 +114,15 @@ class TagUtils
     private function createTag($data)
     {
 
-        if ($data['type'] == 'sHtml5Start'){
+        if ($data['type'] == 'sHtml5Start') {
             $data['sh5_pid'] = 0;
             $data['sorting'] = $data['sorting'] - 1;
-        }else{
+        } else {
             $data['sh5_pid'] = $data['id'];
             $data['sorting'] = $data['sorting'] + 1;
         }
 
-        $data['tstamp']  = time();
+        $data['tstamp'] = time();
         unset($data['id']);
 
         // Insert the tag
@@ -133,7 +136,6 @@ class TagUtils
 
     /**
      * Delete a html5 tag depending on the given id
-     * @param type $data
      * @return type
      */
     private function deleteTag($id)

@@ -14,8 +14,7 @@
 /**
  * Register the templates
  */
-TemplateLoader::addFiles(array
-(
+TemplateLoader::addFiles(array(
     'ce_semantic_html5_end'         => 'system/modules/semantic_html5/templates',
     'ce_semantic_html5_start'       => 'system/modules/semantic_html5/templates',
     'be_semantic_html5_colorizejs'  => 'system/modules/semantic_html5/templates',

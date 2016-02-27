@@ -39,6 +39,8 @@ class Helper
 
     /**
      * @see http://stackoverflow.com/a/3597447
+     * @param integer $saturation
+     * @param double $value
      */
     private static function HSVtoRGB($hue, $saturation, $value)
     {
