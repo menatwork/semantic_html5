@@ -84,7 +84,9 @@ class TagUtils
         $cTags = $this->getcorrespondingTag($item);
         
         //of no tags were found, nothing else to do
-        if ($cTags == null) return;
+        if ($cTags == null) {
+            return;
+        }
 
         //delete all tags
         while ($cTags->next()) {
