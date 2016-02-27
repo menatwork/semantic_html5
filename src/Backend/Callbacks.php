@@ -72,10 +72,19 @@ class Callbacks
         }
     }
 
+    /**
+     * Deletes the corresponding html5 tag
+     * 
+     * @param \DataContainer $dc
+     * @param int $id
+     */
     public static function ondeleteCallback(\DataContainer $dc, $id)
     {
-        $util = new TagUtils($dc->table);
-        $util->deleteCorrespondingTag($dc->activeRecord);
+        //if this is not a html5 element, do nothing
+        if (in_array($dc->activeRecord->type, array('sHtml5Start', 'sHtml5End'))) {
+            $util = new TagUtils($dc->table);
+            $util->deleteCorrespondingTag($dc->activeRecord);
+        }
     }
 
     /**
