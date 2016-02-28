@@ -29,7 +29,10 @@ class Start extends \ContentElement
         //parse all extra attributes
         $attributes = '';
         if ($this->sh5_additional) {
-            foreach (deserialize($this->sh5_additional) as $additional) {
+            /** @var array $additionalAttributes */
+            $additionalAttributes = deserialize($this->sh5_additional, true);
+
+            foreach ($additionalAttributes as $additional) {
                 switch ($additional['property']) {
                     case 'class':
                             if (!empty($additional['value'])) {
