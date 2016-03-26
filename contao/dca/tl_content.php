@@ -21,6 +21,7 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['sHtml5Start'] = '{type_legend},typ
  */
 $GLOBALS['TL_DCA']['tl_content']['config']['onsubmit_callback'][] = array('SemanticHTML5\Backend\Callbacks', 'onsubmitCallback');
 $GLOBALS['TL_DCA']['tl_content']['config']['ondelete_callback'][] = array('SemanticHTML5\Backend\Callbacks', 'ondeleteCallback');
+$GLOBALS['TL_DCA']['tl_content']['config']['oncopy_callback'][] = array('SemanticHTML5\Backend\Callbacks', 'oncopyContentCallback');
 
 /**
  * Fields

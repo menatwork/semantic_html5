@@ -28,6 +28,11 @@ class Callbacks
     private static $elementColors = [];
 
     /**
+     * Array tempData
+     */
+    private static $tempData = [];
+    
+    /**
      * Prevent direct instantiation (Singleton)
      */
     protected function __construct() {}
@@ -53,7 +58,7 @@ class Callbacks
      * @param \DataContainer $dc
      */
     public static function onsubmitCallback(\DataContainer $dc)
-    {
+    {   
         //if this is not a html5 element, do nothing
         if (in_array($dc->activeRecord->type, array('sHtml5Start', 'sHtml5End'))) {
 
@@ -68,7 +73,7 @@ class Callbacks
 
             //crea or update the corresponding html5 tag
             $util = new TagUtils($dc->table);
-            $util->createOrupdateCorresppondingTag($dc->activeRecord);
+            $util->createOrUpdateCorresppondingTag($dc->activeRecord);
         }
     }
 
@@ -84,6 +89,63 @@ class Callbacks
         if (in_array($dc->activeRecord->type, array('sHtml5Start', 'sHtml5End'))) {
             $util = new TagUtils($dc->table);
             $util->deleteCorrespondingTag($dc->activeRecord);
+        }
+    }
+
+    /**
+     * This methods corrects the hml5-elements after using the copy function of 
+     * the tl_content table
+     * 
+     * @param int $id The id of the new element
+     * @param \DataContainer $dc The datad container
+     */
+    public static function oncopyContentCallback($id, \DataContainer $dc)
+    {
+ 
+        //only handle copyAll cases. If only a single element was copied the 
+        //onsubmit callback will handle the correction
+        if (\Input::get('act') == 'copyAll') {
+
+            $newElement = \Database::getInstance()
+                    ->prepare('SELECT *FROM '. $dc->table . ' WHERE id = ?')
+                    ->execute($id);
+
+            //if the new element was found and is a type of html5 element
+            if ($newElement !== null && in_array($newElement->type, array('sHtml5Start', 'sHtml5End'))) {
+
+                $util = new TagUtils($dc->table);
+                //save the old sh5_pid
+                $oldPid = $newElement->sh5_pid;
+                
+                if ($newElement->type === 'sHtml5Start') {
+                    //update the sh5_pid
+                    $newElement = $util->updateTag($id, array('sh5_pid' => $id));
+ 
+                    //create an end tag, just in case it was not copied 
+                    $correspondingId = $util->createOrUpdateCorresppondingTag($newElement);
+                
+                    //Save the new id if available
+                    if ($correspondingId !== null) {
+                        self::$tempData[$oldPid]['end'] = $correspondingId;
+                    }
+                        
+                    //also save the new start tag
+                    self::$tempData[$oldPid]['start'] = $newElement->id;
+
+                }else{
+                    //if an end tag was allready created delete it
+                    if (self::$tempData[$oldPid]['end'] !== null) {
+                        $util->deleteTag(self::$tempData[$oldPid]['end']);
+                    }
+                    
+                    //get the new sh5_pid
+                    $newPid = (self::$tempData[$oldPid]['start']) ? self::$tempData[$oldPid]['start'] : $id;
+                    
+                    //update the new element and the corresponding tag
+                    $newElement = $util->updateTag($id, array('sh5_pid' => $newPid));
+                    $util->createOrUpdateCorresppondingTag($newElement);
+                }       
+            }
         }
     }
 
