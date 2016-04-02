@@ -21,4 +21,4 @@ $GLOBALS['TL_LANG']['tl_content']['sh5_additional']['value']    = 'Wert';
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_content']['html5_legend']               = 'HTML5-Elemente';
+$GLOBALS['TL_LANG']['tl_content']['html5_legend'] = 'HTML5-Elemente';

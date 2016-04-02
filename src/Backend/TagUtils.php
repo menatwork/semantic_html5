@@ -113,9 +113,9 @@ class TagUtils
      */
     public function getTag($id) {
 
-       $item = \Database::getInstance()
-               ->prepare('SELECT * FROM ' . $this->table . ' WHERE (type ="sHtml5Start" OR type = "sHtml5End") AND id = ?')
-               ->execute($id);
+        $item = \Database::getInstance()
+                ->prepare('SELECT * FROM ' . $this->table . ' WHERE (type ="sHtml5Start" OR type = "sHtml5End") AND id = ?')
+                ->execute($id);
 
         return ($item->numRows() > 0) ? $item : null;
     }
