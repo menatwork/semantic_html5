@@ -175,10 +175,10 @@ class TagUtils
     public function deleteTag($id)
     {
         //ToDo: add the UnDo functionality from contao
-        $result = \Database::getInstance()
-                    ->prepare('DELETE FROM ' . $this->table . ' WHERE id = ? '
-                            . 'AND (type = "sHtml5Start" OR type = "sHtml5End")')
-                    ->execute($id);
+        \Database::getInstance()
+                ->prepare('DELETE FROM ' . $this->table . ' WHERE id = ? '
+                        . 'AND (type = "sHtml5Start" OR type = "sHtml5End")')
+                ->execute($id);
     }
 
     /**

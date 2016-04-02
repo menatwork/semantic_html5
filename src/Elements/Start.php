@@ -15,8 +15,8 @@ namespace SemanticHTML5\Elements;
 /**
  * Semantic html5 start element
  * 
- * @property string $sh5_additional* 
- * @property string $sh5_type* 
+ * @property string $sh5_additional 
+ * @property string $sh5_type
  */
 class Start extends \ContentElement
 {
