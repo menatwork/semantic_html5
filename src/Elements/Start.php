@@ -12,6 +12,12 @@
 
 namespace SemanticHTML5\Elements;
 
+/**
+ * Semantic html5 start element
+ * 
+ * @property string $sh5_additional* 
+ * @property string $sh5_type* 
+ */
 class Start extends \ContentElement
 {
 
@@ -39,6 +45,9 @@ class Start extends \ContentElement
                                 $this->cssID = array($this->cssID[0], $this->cssID[1] . ' ' . $additional['value']);
                             }
                                 
+                        break;
+                    case 'id':
+                        //just do not add ids! This should be done in the id - css field
                         break;
                     default:
                         $attributes .= ' ' . $additional['property'] . ((!empty($additional['value'])) ? '="' . specialchars($additional['value']) . '"' : '');

@@ -28,7 +28,7 @@ class Helper
     {
         $color = self::HSVtoRGB(self::$rotatingColor, 1, .8);
 
-        static::$rotatingColor += .7;
+        self::$rotatingColor += .7;
 
         if (self::$rotatingColor > 1) {
             self::$rotatingColor -= 1;

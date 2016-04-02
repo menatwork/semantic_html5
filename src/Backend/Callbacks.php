@@ -105,14 +105,12 @@ class Callbacks
         //onsubmit callback will handle the correction
         if (\Input::get('act') == 'copyAll') {
 
-            $newElement = \Database::getInstance()
-                    ->prepare('SELECT *FROM '. $dc->table . ' WHERE id = ?')
-                    ->execute($id);
+            $util = new TagUtils($dc->table);
+            $newElement = $util->getTag($id);
 
             //if the new element was found and is a type of html5 element
-            if ($newElement !== null && in_array($newElement->type, array('sHtml5Start', 'sHtml5End'))) {
+            if ($newElement !== null) {
 
-                $util = new TagUtils($dc->table);
                 //save the old sh5_pid
                 $oldPid = $newElement->sh5_pid;
                 
@@ -176,5 +174,17 @@ class Callbacks
             $strBuffer .= $template->parse();
         }
         return ($strBuffer);
+    }
+
+
+    /**
+     * Returns all valid html5 tag for the given datacontainer
+     * 
+     * @param \DataContainer $dc
+     * @return array The array with the valid html5 tags
+     */
+    public function getHtml5Tags(\DataContainer $dc) {
+
+        return $GLOBALS['TL_HTML5'][$dc->table];
     }
 }

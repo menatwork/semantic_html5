@@ -11,6 +11,14 @@
  */
 
 /**
+ *
+ * Config
+ */
+$GLOBALS['TL_HTML5'] = array(
+    'tl_content' => array('article', 'aside', 'div', 'footer', 'header', 'section')
+);
+
+/**
  * Content Element
  */
 $GLOBALS['TL_CTE']['html5']['sHtml5Start'] = 'SemanticHTML5\Elements\Start';
