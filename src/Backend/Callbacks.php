@@ -129,7 +129,7 @@ class Callbacks
                     //also save the new start tag
                     self::$tempData[$oldPid]['start'] = $newElement->id;
 
-                }else{
+                } else {
                     //if an end tag was allready created delete it
                     if (self::$tempData[$oldPid]['end'] !== null) {
                         $util->deleteTag(self::$tempData[$oldPid]['end']);
