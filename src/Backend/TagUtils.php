@@ -105,6 +105,22 @@ class TagUtils
     }
 
     /**
+     * Returns the html5 tag with the given id. If the element could not be found 
+     * or is not an html5 element, this function return null.
+     * 
+     * @param type $id
+     * @return result | NULL
+     */
+    public function getTag($id) {
+
+       $item = \Database::getInstance()
+               ->prepare('SELECT * FROM ' . $this->table . ' WHERE (type ="sHtml5Start" OR type = "sHtml5End") AND id = ?')
+               ->execute($id);
+
+        return ($item->numRows() > 0) ? $item : null;
+    }
+
+    /**
      * Return the matching thml start or end tag
      * @param Result $item the Database-Result from the given item
      * @return NULL|Result Null or the corresponding tag
@@ -143,15 +159,13 @@ class TagUtils
                 ->prepare("INSERT INTO " . $this->table . " %s")
                 ->set($data)
                 ->execute();
-        
-        $newId = $result->insertId;
-        
+
         //update the sh5_pid for start elements
         if ($data['type'] == 'sHtml5Start') {
-            $this->updateTag($newId, array('sh5_pid' => $newId));
+            $this->updateTag($result->insertId, array('sh5_pid' => $result->insertId));
         }
-        
-        return $newId;
+
+        return $result->insertId;
     }
 
     /**
