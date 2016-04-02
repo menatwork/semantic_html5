@@ -12,6 +12,8 @@
 
 namespace SemanticHTML5\Elements;
 
+use SemanticHTML5\Frontend\Helper;
+
 /**
  * Semantic html5 start element
  * 
@@ -34,26 +36,15 @@ class Start extends \ContentElement
     {
         //parse all extra attributes
         $attributes = '';
+        $helper = new Helper();
+
         if ($this->sh5_additional) {
             /** @var array $additionalAttributes */
             $additionalAttributes = deserialize($this->sh5_additional, true);
+            $attributes = $helper->convertAttributesToString($additionalAttributes, 'tl_content'); 
 
-            foreach ($additionalAttributes as $additional) {
-                switch ($additional['property']) {
-                    case 'class':
-                            if (!empty($additional['value'])) {
-                                $this->cssID = array($this->cssID[0], $this->cssID[1] . ' ' . $additional['value']);
-                            }
-                                
-                        break;
-                    case 'id':
-                        //just do not add ids! This should be done in the id - css field
-                        break;
-                    default:
-                        $attributes .= ' ' . $additional['property'] . ((!empty($additional['value'])) ? '="' . specialchars($additional['value']) . '"' : '');
-                }
-            }
         }
+
         $this->Template->sh5_additional = $attributes;
 
         //render BE-Template
