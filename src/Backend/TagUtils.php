@@ -160,12 +160,14 @@ class TagUtils
                 ->set($data)
                 ->execute();
 
+        $newId = $result->insertId;
+
         //update the sh5_pid for start elements
         if ($data['type'] == 'sHtml5Start') {
-            $this->updateTag($result->insertId, array('sh5_pid' => $result->insertId));
+            $this->updateTag($newId, array('sh5_pid' => $result->insertId));
         }
 
-        return $result->insertId;
+        return $newId;
     }
 
     /**
