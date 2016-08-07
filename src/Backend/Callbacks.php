@@ -185,6 +185,6 @@ class Callbacks
      */
     public function getHtml5Tags(\DataContainer $dc) {
 
-        return $GLOBALS['TL_HTML5'][$dc->table];
+        return $GLOBALS['TL_HTML5']['tags'][$dc->table];
     }
 }

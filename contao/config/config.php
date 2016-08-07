@@ -14,8 +14,12 @@
  *
  * Config
  */
-$GLOBALS['TL_HTML5'] = array(
+$GLOBALS['TL_HTML5']['tags'] = array(
     'tl_content' => array('article', 'aside', 'div', 'footer', 'header', 'section')
+);
+
+$GLOBALS['TL_HTML5']['copyFields'] = array(
+    'tl_content' => array('protected', 'groups', 'guests', 'start', 'stop')
 );
 
 /**

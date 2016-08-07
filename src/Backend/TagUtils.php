@@ -76,6 +76,11 @@ class TagUtils
                         'sh5_pid' => $item->id,
                         'sh5_type' => $item->sh5_type
                     );
+
+                    if ($item->type == 'sHtml5Start') {
+                        $data = array_merge($data, $this->getUpdateData($item));
+                    }
+
                     $this->updateTag($cTags->id, $data);
 
                     $blnDelete = true;
@@ -202,6 +207,23 @@ class TagUtils
         return \Database::getInstance()
                 ->prepare('SELECT * FROM ' . $this->table . ' WHERE id = ?')
                 ->execute($id);
+    }
+
+    /**
+     * Collects all fields which should have the same values foro start and end 
+     * tag, e.g. the show to guest only flag. See #30
+     * 
+     * @param Result $item
+     * @return array an array with the data of the copy fields
+     */
+    protected function getUpdateData(Result $item){
+        $copyFields = array();
+
+        foreach ($GLOBALS['TL_HTML5']['copyFields'][$this->table] as $field) {
+            $copyFields[$field] = $item->$field;
+        }
+
+        return $copyFields;
     }
 
 }
