@@ -122,7 +122,7 @@ class TagUtils
                 ->prepare('SELECT * FROM ' . $this->table . ' WHERE (type ="sHtml5Start" OR type = "sHtml5End") AND id = ?')
                 ->execute($id);
 
-        return ($item->numRows() > 0) ? $item : null;
+        return ($item->numRows > 0) ? $item : null;
     }
 
     /**
@@ -134,9 +134,9 @@ class TagUtils
     {
         $type = $this->matchingTags[$item->type];
         $result = \Database::getInstance()
-                    ->prepare('SELECT * FROM ' . $this->table . ' WHERE sh5_pid = ? AND type = ?')
-                    ->execute($item->sh5_pid, $type);
-        
+                    ->prepare('SELECT * FROM ' . $this->table . ' WHERE pid = ? AND sh5_pid = ? AND type = ?')
+                    ->execute($item->pid, $item->sh5_pid, $type);
+
         return ($result->numRows == 0) ? null : $result;
     }
 
