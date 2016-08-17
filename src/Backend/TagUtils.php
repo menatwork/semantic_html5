@@ -46,9 +46,17 @@ class TagUtils
      * @param Result The DB-Result of the element to update
      * @return NULL or the id of the new element
      */
-    public function createOrUpdateCorresppondingTag(Result $item)
+    public function createOrUpdateCorresppondingTag(Result $item, $fixSh5Pid = false)
     {
         $cTags = $this->getcorrespondingTag($item);
+
+        //correct the sh5_pid if needed and the update flag is set
+        if ($fixSh5Pid && $item->type == 'sHtml5Start' && $item->id != $item->sh5_pid) {
+
+            $data = array('sh5_pid' => $item->id);
+            $item = $this->updateTag($item->id, $data);
+
+        }
 
         if ($cTags == null) {
             //create a new tag
@@ -59,7 +67,7 @@ class TagUtils
             //update the sh5_pid for end tags
             if ($item->type == 'sHtml5End') {
                 $data = array('sh5_pid' => $newId);
-                $this->updateTag($item->id, $data);
+                $item = $this->updateTag($item->id, $data);
             }
 
             return $newId;
@@ -73,7 +81,7 @@ class TagUtils
 
                     //set the new data
                     $data = array(
-                        'sh5_pid' => $item->id,
+                        'sh5_pid' => ($cTags->type == 'sHtml5Start') ? $item->sh5_pid : $item->id,
                         'sh5_type' => $item->sh5_type
                     );
 

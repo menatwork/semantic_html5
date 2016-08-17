@@ -93,6 +93,33 @@ class Callbacks
 
     /**
      * This methods corrects the hml5-elements after using the copy function of 
+     * the tl_article table
+     * 
+     * @param type $id
+     * @param \DataContainer $dc
+     */
+    public static function oncopyArticleCallback($id, \DataContainer $dc)
+    {
+
+        //fetch all html5 start elemnts and update them the end elements will be corrected automatically
+        $elements = \Database::getInstance()
+                ->prepare('SELECT * FROM tl_content WHERE type = "sHtml5Start" AND pid = ?')
+                ->execute($id);
+
+        //return if no elements were found
+        if ($elements->numRows == 0) {
+            return;
+        }
+
+        $util = new TagUtils('tl_content');
+
+        while ($elements->next()) {
+            $util->createOrUpdateCorresppondingTag($elements, true);
+        }
+    }
+
+    /**
+     * This methods corrects the hml5-elements after using the copy function of 
      * the tl_content table
      * 
      * @param int $id The id of the new element
