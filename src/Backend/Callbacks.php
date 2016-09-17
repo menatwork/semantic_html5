@@ -91,7 +91,7 @@ class Callbacks
         }
     }
 
-/**
+    /**
      * This methods corrects the hml5-elements after using the copy function of 
      * the tl_page table
      * 
