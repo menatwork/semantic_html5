@@ -163,9 +163,13 @@ class TagUtils
             $data['sh5_pid'] = $data['id'];
             $data['sorting'] = $data['sorting'] + 1;
         }
-
+        
         $data['tstamp'] = time();
         unset($data['id']);
+
+        //remove fields which are not present in the db table (See #22)
+        $tableFields = array_flip(\Database::getInstance()->getFieldNames($this->table));
+        $data = array_intersect_key($data, $tableFields);
 
         // Insert the tag
         $result = \Database::getInstance()
