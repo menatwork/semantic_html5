@@ -44,7 +44,7 @@ class TagUtils
      * Creates or updates a corresponding tag if needed
      * 
      * @param Result The DB-Result of the element to update
-     * @return NULL or the id of the new element
+     * @return integer|null or the id of the new element
      */
     public function createOrUpdateCorresppondingTag(Result $item, $fixSh5Pid = false)
     {
@@ -121,7 +121,7 @@ class TagUtils
      * Returns the html5 tag with the given id. If the element could not be found 
      * or is not an html5 element, this function return null.
      * 
-     * @param type $id
+     * @param integer $id
      * @return result | NULL
      */
     public function getTag($id) {
