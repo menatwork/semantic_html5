@@ -7,15 +7,8 @@
 	"license":"LGPL-3.0+",
 	"authors":[
 		{
-			"name":"Andreas Isaak",
-			"email":"contao@men-at-work.de",
-			"homepage":"http://www.men-at-work.de",
-			"role":"Developer"
-		},
-		{
-			"name":"Patrick Kahl",
-			"email":"contao@men-at-work.de",
-			"homepage":"http://www.men-at-work.de",
+			"name":"David Maack",
+			"email":"david.maack@arcor.de",
 			"role":"Developer"
 		}
 	],
@@ -27,26 +20,25 @@
 	},
 	"require":{
 		"php":">=5.3",
-		"contao/core":">=2.11,<4",
-		"contao-community-alliance/composer-installer":"*",
+		"contao/core-bundle":"~3.5 || ~4.2",
+		"contao-community-alliance/composer-plugin": "~2.4 || ~3.0",
 		"menatwork/contao-multicolumnwizard":"~3.2"
 	},
-	"autoload":{
-		"classmap":["system/"]
-	},
+        "require-dev":{
+            "phpcq/phpcq": "~1.0"
+        },
+	"autoload": {
+	    "psr-4": {
+	      "SemanticHTML5\\": "src/"
+	    }
+	  },
 	"replace":{
 		"contao-legacy/semantic_html5":"*"
 	},
 	"extra":{
 		"contao":{
 			"sources":{
-				"system/modules/semantic_html5":"system/modules/semantic_html5"
-			},
-			"transifex": {
-				"project": "semantic_html5",
-				"prefix": "",
-				"languages_cto": "system/modules/semantic_html5/languages",
-				"languages_tx": ".tx"
+				"contao":"system/modules/semantic_html5"
 			}
 		}
 	}
