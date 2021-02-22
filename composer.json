@@ -19,10 +19,9 @@
 		"source":"https://github.com/menatwork/semantic_html5"
 	},
 	"require":{
-		"php":">=5.3",
-		"contao/core-bundle":"~3.5 || ~4.2",
-		"contao-community-alliance/composer-plugin": "~2.4 || ~3.0",
-		"menatwork/contao-multicolumnwizard":"~3.3"
+		"php":">=7.0",
+    		"contao/core-bundle": "^4.4.8",
+		"menatwork/contao-multicolumnwizard-bundle":"~3.4"
 	},
         "require-dev":{
             "phpcq/phpcq": "~1.0"
