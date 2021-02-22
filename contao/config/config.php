@@ -15,7 +15,7 @@
  * Config
  */
 $GLOBALS['TL_HTML5']['tags'] = array(
-    'tl_content' => array('article', 'aside', 'div', 'footer', 'header', 'section')
+    'tl_content' => array('article', 'aside', 'button', 'div', 'footer', 'header', 'section')
 );
 
 $GLOBALS['TL_HTML5']['copyFields'] = array(
