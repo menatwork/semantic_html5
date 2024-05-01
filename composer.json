@@ -19,18 +19,18 @@
 		"source":"https://github.com/menatwork/semantic_html5"
 	},
 	"require":{
-		"php": "^7.2",
-    		"contao/core-bundle": "^4.4.8",
-		"menatwork/contao-multicolumnwizard-bundle":"~3.4"
+		"php": "^7.2 || ^8.1",
+    	"contao/core-bundle": "^4.4.8",
+		"menatwork/contao-multicolumnwizard-bundle": "^3.4"
 	},
-        "require-dev":{
-            "phpcq/phpcq": "~1.0"
-        },
+	"require-dev":{
+		"phpcq/phpcq": "~1.0"
+	},
 	"autoload": {
 	    "psr-4": {
 	      "SemanticHTML5\\": "src/"
 	    }
-	  },
+	},
 	"replace":{
 		"contao-legacy/semantic_html5":"*"
 	},
