@@ -229,7 +229,7 @@ class Callbacks
         if (TL_MODE == 'BE' && ($objRow->type == 'sHtml5Start' || $objRow->type == 'sHtml5End')) {
             //get the color of the parent start-tag or rotate the color
             if ($objRow->type == 'sHtml5End') {
-                $color = self::$elementColors[$objRow->sh5_pid];
+                $color = self::$elementColors[$objRow->sh5_pid] ?? null;
             } else {
                 $color = Helper::rotateColor();
                 self::$elementColors[$objRow->id] = $color;
