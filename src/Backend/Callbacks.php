@@ -121,7 +121,7 @@ class Callbacks
                                 . 'WHERE type = "sHtml5Start" '
                                 . 'AND pid IN '
                                 . '(SELECT id FROM tl_article WHERE pid in (%s))',
-                                implode(',', $pages))
+                                implode(',', array_fill(0, count($pages), '?')))
                         )->execute($pages);
 
         //return if no elements were found
