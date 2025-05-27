@@ -59,9 +59,9 @@ class Callbacks
 
     /**
      * Adds or updates the corresponding star or end tag
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      */
-    public static function onsubmitCallback(\DataContainer $dc)
+    public static function onsubmitCallback(DataContainer $dc)
     {
         //if this is not a html5 element, do nothing
         if (in_array($dc->activeRecord->type, array('sHtml5Start', 'sHtml5End'))) {
@@ -83,10 +83,10 @@ class Callbacks
     /**
      * Deletes the corresponding html5 tag
      *
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      * @param int $id
      */
-    public static function ondeleteCallback(\DataContainer $dc, $id)
+    public static function ondeleteCallback(DataContainer $dc, $id)
     {
         //if this is not a html5 element, do nothing
         if (in_array($dc->activeRecord->type, array('sHtml5Start', 'sHtml5End'))) {
@@ -100,9 +100,9 @@ class Callbacks
      * the tl_page table
      *
      * @param type $id
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      */
-    public static function oncopyPageCallback($id, \DataContainer $dc)
+    public static function oncopyPageCallback($id, DataContainer $dc)
     {
 
         $pages = array($id);
@@ -141,9 +141,9 @@ class Callbacks
      * the tl_article table
      *
      * @param type $id
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      */
-    public static function oncopyArticleCallback($id, \DataContainer $dc)
+    public static function oncopyArticleCallback($id, DataContainer $dc)
     {
 
         //fetch all html5 start elemnts and update them the end elements will be corrected automatically
@@ -168,9 +168,9 @@ class Callbacks
      * the tl_content table
      *
      * @param int $id The id of the new element
-     * @param \DataContainer $dc The datad container
+     * @param DataContainer $dc The datad container
      */
-    public static function oncopyContentCallback($id, \DataContainer $dc)
+    public static function oncopyContentCallback($id, DataContainer $dc)
     {
 
         //only handle copyAll cases. If only a single element was copied the
@@ -253,7 +253,7 @@ class Callbacks
     /**
      * Returns all valid html5 tag for the given datacontainer
      *
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      * @return array The array with the valid html5 tags
      */
     public function getHtml5Tags(DataContainer $dc) {
