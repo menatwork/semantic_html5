@@ -19,7 +19,7 @@
     },
     "require":{
         "php": "^8.0",
-        "contao/core-bundle": "^5.3",
+        "contao/core-bundle": "^4.13 | ^5.0",
         "menatwork/contao-multicolumnwizard-bundle": "^3.6"
     },
     "require-dev":{
