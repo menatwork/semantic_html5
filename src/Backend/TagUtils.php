@@ -13,9 +13,10 @@
 namespace SemanticHTML5\Backend;
 
 use Contao\Database\Result;
+use Contao\Database;
 
 /**
- * Generall Helper Class for handling start and end tags
+ * General Helper Class for handling start and end tags
  */
 class TagUtils
 {
@@ -126,7 +127,7 @@ class TagUtils
      */
     public function getTag($id) {
 
-        $item = \Database::getInstance()
+        $item = Database::getInstance()
                 ->prepare('SELECT * FROM ' . $this->table . ' WHERE (type ="sHtml5Start" OR type = "sHtml5End") AND id = ?')
                 ->execute($id);
 
@@ -141,7 +142,7 @@ class TagUtils
     public function getcorrespondingTag(Result $item)
     {
         $type = $this->matchingTags[$item->type];
-        $result = \Database::getInstance()
+        $result = Database::getInstance()
                     ->prepare('SELECT * FROM ' . $this->table . ' WHERE pid = ? AND sh5_pid = ? AND type = ?')
                     ->execute($item->pid, $item->sh5_pid, $type);
 
@@ -168,11 +169,11 @@ class TagUtils
         unset($data['id']);
 
         //remove fields which are not present in the db table (See #22)
-        $tableFields = array_flip(\Database::getInstance()->getFieldNames($this->table));
+        $tableFields = array_flip(Database::getInstance()->getFieldNames($this->table));
         $data = array_intersect_key($data, $tableFields);
 
         // Insert the tag
-        $result = \Database::getInstance()
+        $result = Database::getInstance()
                 ->prepare("INSERT INTO " . $this->table . " %s")
                 ->set($data)
                 ->execute();
@@ -194,7 +195,7 @@ class TagUtils
     public function deleteTag($id)
     {
         //ToDo: add the UnDo functionality from contao
-        \Database::getInstance()
+        Database::getInstance()
                 ->prepare('DELETE FROM ' . $this->table . ' WHERE id = ? '
                         . 'AND (type = "sHtml5Start" OR type = "sHtml5End")')
                 ->execute($id);
@@ -210,16 +211,27 @@ class TagUtils
     public function updateTag($id, $data)
     {
         //update the database
-        \Database::getInstance()
+        Database::getInstance()
                 ->prepare('UPDATE ' . $this->table . ' %s WHERE id = ?')
                 ->set($data)
                 ->execute($id);
         
         //return the updated element
-        return \Database::getInstance()
-                ->prepare('SELECT * FROM ' . $this->table . ' WHERE id = ?')
-                ->execute($id);
+        return $this->getCurrentRecord($id);
     }
+
+    /**
+     * Returns the current record with the given id as Result
+     *
+     * @param int $id The id of the element
+     * @return Result The current element as a mysql result
+     */
+    public function getCurrentRecord($id): Result {
+        return Database::getInstance()
+            ->prepare('SELECT * FROM ' . $this->table . ' WHERE id = ?')
+            ->execute($id);
+    }
+
 
     /**
      * Collects all fields which should have the same values foro start and end 

@@ -2,7 +2,7 @@
 .DS_Store
 Thumbs.db
 
-# IDEs 
+# IDEs
 .buildpath
 .project
 .settings/
@@ -11,11 +11,16 @@ Thumbs.db
 .idea/
 nbproject/
 
-# composer related
-vendor/
-
 # build
 build/
 
-# custom
-runonceDebug.php
+# Composer
+/composer.lock
+/vendor/
+
+# PhpUnit
+/.phpunit.result.cache
+/phpunit.xml
+
+# Tools
+/tools/*/vendor

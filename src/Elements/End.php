@@ -12,7 +12,11 @@
 
 namespace SemanticHTML5\Elements;
 
-class End extends \ContentElement
+use Contao\BackendTemplate;
+use Contao\ContentElement;
+use Contao\System;
+
+class End extends ContentElement
 {
 
     /**
@@ -27,8 +31,10 @@ class End extends \ContentElement
     protected function compile()
     {
         //render BE-Template
-        if (TL_MODE == 'BE') {
-            $this->Template = new \BackendTemplate('be_wildcard');
+        $request = System::getContainer()->get('request_stack')->getCurrentRequest();
+        if ($request && System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request))
+        {
+            $this->Template = new BackendTemplate('be_wildcard');
             $this->Template->wildcard = "&lt;/" . $this->sh5_type . "&gt;";
             return $this->Template->parse();
         }
