@@ -15,6 +15,8 @@ namespace SemanticHTML5\Backend;
 use Contao\BackendTemplate;
 use Contao\DataContainer;
 use Contao\System;
+use Contao\Database;
+use Contao\Input;
 
 /**
  * Generall class to handle all backend callbacks
@@ -66,8 +68,8 @@ class Callbacks
         //if this is not a html5 element, do nothing
         if (in_array($dc->activeRecord->type, array('sHtml5Start', 'sHtml5End'))) {
 
-            $item = $dc->activeRecord;
             $util = new TagUtils($dc->table);
+            $item = $util->getCurrentRecord($dc->activeRecord->id);
 
             //correct the sh5_pid if needed
             if ($item->type == 'sHtml5Start' &&
@@ -91,7 +93,8 @@ class Callbacks
         //if this is not a html5 element, do nothing
         if (in_array($dc->activeRecord->type, array('sHtml5Start', 'sHtml5End'))) {
             $util = new TagUtils($dc->table);
-            $util->deleteCorrespondingTag($dc->activeRecord);
+            $item = $util->getCurrentRecord($dc->activeRecord->id);
+            $util->deleteCorrespondingTag($item);
         }
     }
 
@@ -108,13 +111,13 @@ class Callbacks
         $pages = array($id);
 
         //fetch the child pages, if needed
-        if (\Input::get('childs')) {
-            $pages = array_merge($pages, \Database::getInstance()->getChildRecords($id, 'tl_page'));
+        if (Input::get('childs')) {
+            $pages = array_merge($pages, Database::getInstance()->getChildRecords($id, 'tl_page'));
 
         }
 
         //fetch all html5 start elemnts and update them the end elements will be corrected automatically
-        $elements = \Database::getInstance()
+        $elements = Database::getInstance()
                 ->prepare(
                         sprintf(
                                 'SELECT * FROM tl_content '
@@ -147,7 +150,7 @@ class Callbacks
     {
 
         //fetch all html5 start elemnts and update them the end elements will be corrected automatically
-        $elements = \Database::getInstance()
+        $elements = Database::getInstance()
                 ->prepare('SELECT * FROM tl_content WHERE type = "sHtml5Start" AND pid = ?')
                 ->execute($id);
 
@@ -175,7 +178,7 @@ class Callbacks
 
         //only handle copyAll cases. If only a single element was copied the
         //onsubmit callback will handle the correction
-        if (\Input::get('act') == 'copyAll') {
+        if (Input::get('act') == 'copyAll') {
 
             $util = new TagUtils($dc->table);
             $newElement = $util->getTag($id);
