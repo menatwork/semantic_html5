@@ -1,6 +1,5 @@
 {
     "name":"menatwork/semantic_html5",
-    "version": "3.0.0",
     "description":"Create html5 elements as content element",
     "keywords":["html5","semantic","contentelements","wrapper"],
     "type":"contao-bundle",
@@ -20,7 +19,7 @@
     },
     "require":{
         "php": "^8.1",
-        "contao/core-bundle": "^5.3.0",
+        "contao/core-bundle": "^5.3",
         "menatwork/contao-multicolumnwizard-bundle": "^3.6"
     },
     "require-dev":{
