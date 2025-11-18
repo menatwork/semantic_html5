@@ -12,6 +12,8 @@
 
 namespace SemanticHTML5\Frontend;
 
+use Contao\StringUtil;
+
 /**
  * Generall Helper Class for Backend realted functions
  */
@@ -40,7 +42,7 @@ class Helper
                 continue;
             }
 
-            $attrbuteString .= ' ' . $attribute['property'] . ((!empty($attribute['value'])) ? '="' . specialchars($attribute['value']) . '"' : '');
+            $attrbuteString .= ' ' . $attribute['property'] . ((!empty($attribute['value'])) ? '="' . StringUtil::specialchars($attribute['value']) . '"' : '');
         }
 
         return $attrbuteString;
