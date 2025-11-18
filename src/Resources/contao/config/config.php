@@ -19,7 +19,7 @@ $GLOBALS['TL_HTML5']['tags'] = array(
 );
 
 $GLOBALS['TL_HTML5']['copyFields'] = array(
-    'tl_content' => array('protected', 'groups', 'guests', 'start', 'stop')
+    'tl_content' => array('protected', 'groups', 'start', 'stop')
 );
 
 /**
